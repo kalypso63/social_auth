@@ -5,20 +5,16 @@
 
 .. include:: Includes.txt
 
-
 .. _links:
 
 Links
 -----
 
 :TER:
-	https://typo3.org/extensions/repository/view/<extension key>
-
-:Bug Tracker:
-	https://forge.typo3.org/projects/extension-<extension key>/issues
+	https://typo3.org/extensions/repository/view/social_auth
 
 :Git Repository:
-	https://github.com/<username>/<extension key>
+	https://github.com/kalypsos/social_auth.git
 
 :Contact:
-	`@<username> <https://twitter.com/your-username>`__
+	@<VancloosterM> <https://twitter.com/vancloosterm>

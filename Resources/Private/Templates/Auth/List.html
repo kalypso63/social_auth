@@ -3,7 +3,7 @@
 <f:section name="main">
     <f:security.ifAuthenticated>
         <f:then>
-            <a href="/?logintype=logout">Se déconnecter</a>
+            <a href="/?logintype=logout"><f:translate key="logout.label" /></a>
         </f:then>
         <f:else>
             <f:if condition="{providers}">

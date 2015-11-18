@@ -28,7 +28,8 @@ Extension manager: **Social auth**
 Two ways exist to integrate social auth on FE
 
 - Add Social auth plugin on your page. It create a link for each enabled providers
-- Create links on your fluid template like this :
+- Create links on your fluid template like this
+
 .. code-block:: xml
 
 	<f:link.page pageType="1316773681" additionalParams="{tx_socialauth_pi1:{provider:'facebook'}}" noCacheHash="TRUE">

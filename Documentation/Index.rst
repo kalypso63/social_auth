@@ -57,3 +57,4 @@ Social auth
 
 	Introduction/Index
 	UsersManual/Index
+	Links

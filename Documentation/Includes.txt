@@ -19,3 +19,6 @@
 .. role::   php(code)
 
 .. highlight:: php
+
+.. highlight:: xml
+
