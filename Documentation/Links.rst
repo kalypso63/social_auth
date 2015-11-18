@@ -14,7 +14,7 @@ Links
 	https://typo3.org/extensions/repository/view/social_auth
 
 :Git Repository:
-	https://github.com/kalypsos/social_auth.git
+	https://github.com/kalypso63/social_auth.git
 
 :Contact:
 	@<VancloosterM> <https://twitter.com/vancloosterm>
