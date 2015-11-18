@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-11-18T13:15:38Z" product-name="social_auth">
+		<header/>
+		<body>
+			<trans-unit id="logout.label">
+				<source>Logout</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
