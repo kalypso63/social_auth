@@ -1,0 +1,18 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+    <f:security.ifAuthenticated>
+        <f:then>
+            <a href="/?logintype=logout">Se déconnecter</a>
+        </f:then>
+        <f:else>
+            <f:if condition="{providers}">
+                <ul>
+                    <f:for each="{providers}" as="provider">
+                        <li><f:link.page pageType="1316773681" additionalParams="{tx_socialauth_pi1:{provider:provider}}" noCacheHash="TRUE">{provider}</f:link.page></li>
+                    </f:for>
+                </ul>
+            </f:if>
+        </f:else>
+    </f:security.ifAuthenticated>
+</f:section>

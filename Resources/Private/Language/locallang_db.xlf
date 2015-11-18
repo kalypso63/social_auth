@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-09-22T07:55:50Z" product-name="social_auth">
+		<header/>
+		<body>
+			<trans-unit id="fe_users.tx_socialauth_source">
+				<source>Provider</source>
+			</trans-unit>
+			<trans-unit id="fe_users.tx_socialauth_identifier">
+                <source>Identifier</source>
+            </trans-unit>
+			<trans-unit id="fe_users.tab.social">
+				<source>Social auth</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

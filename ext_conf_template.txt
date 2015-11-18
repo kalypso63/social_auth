@@ -1,0 +1,45 @@
+# cat=FACEBOOK/0; type=boolean; label=Facebook enable : Enable Single Sign On via Facebook for this System
+providers.facebook.enabled = 0
+
+# cat=FACEBOOK/1; type=string; label=Facebook AppId
+providers.facebook.keys.id =
+
+# cat=FACEBOOK/2; type=string; label=Facebook Secret
+providers.facebook.keys.secret =
+
+# cat=FACEBOOK/3; type=string; label=Scope of get attributes
+providers.facebook.scope = email, user_birthday, user_hometown
+
+# cat=FACEBOOK/4; type=string; label=Enable popin (value = popup,page)
+providers.facebook.display =
+
+# cat=Google/0; type=boolean; label=Google enable : Enable Single Sign On via Google for this System
+providers.google.enabled = 0
+
+# cat=Google/1; type=string; label=Google AppId
+providers.google.keys.id =
+
+# cat=Google/2; type=string; label=Google Secret
+providers.google.keys.secret =
+
+# cat=Google/3; type=string; label=Scope of get attributes
+providers.google.scope = https://www.googleapis.com/auth/userinfo.profile
+
+# cat=Twitter/0; type=boolean; label=Twitter enable : Enable Single Sign On via Google for this System
+providers.twitter.enabled = 0
+
+# cat=Twitter/1; type=string; label=Twitter AppId
+providers.twitter.keys.key =
+
+# cat=Twitter/2; type=string; label=Twitter Secret
+providers.twitter.keys.secret =
+
+# cat=Storage users/O; type=int; label= Storage Pid : The Storage Pid of the Page, where the fe_users should be stored
+users.storagePid =
+
+# cat=Storage users/1; type=string; label= Default user group (uid commal list)
+users.defaultGroup =
+
+# cat=Storage users/2; type=string; label= tx_extbase_type (If subclass is needed)
+users.extbaseType =
+

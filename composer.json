@@ -1,0 +1,22 @@
+{
+    "name": "mv/social_auth",
+    "type": "typo3-cms-extension",
+    "description": "",
+    "homepage": "http://typo3.org",
+    "license": ["GPL-2.0+"],
+    "version": "1.0.0",
+    "config": {
+        "vendor-dir": "Resources/Public/Php"
+    },
+    "autoload": {
+        "psr-4": {
+            "MV\\SocialAuth\\": "Classes"
+        },
+        "classmap": [
+            "Resources/Public/Php"
+        ]
+    },
+    "replace": {
+        "social_auth": "*"
+    }
+}

@@ -1,0 +1,41 @@
+HybridAuth = PAGE
+HybridAuth {
+    typeNum = 1316773681
+    config {
+        xhtml_cleaning = 0
+        disableAllHeaderCode = 1
+        admPanel = 0
+    }
+    headerData >
+    10 = USER_INT
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        vendorName = MV
+        extensionName = SocialAuth
+        pluginName = Pi1
+        controller = Auth
+        switchableControllerActions {
+            Auth {
+                1 = connect
+            }
+        }
+    }
+}
+
+HybridEndPoint = PAGE
+HybridEndPoint < HybridAuth
+HybridEndPoint {
+    typeNum = 1316773682
+    10 {
+        switchableControllerActions {
+            Auth {
+                1 = endpoint
+            }
+        }
+    }
+}
+
+
+
+
+
