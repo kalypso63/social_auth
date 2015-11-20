@@ -35,3 +35,43 @@ Two ways exist to integrate social auth on FE
 	<f:link.page pageType="1316773681" additionalParams="{tx_socialauth_pi1:{provider:'facebook'}}" noCacheHash="TRUE">
 		Facebook
 	</f:link.page>
+
+**Integration with Felogin**
+
+If felogin is used, you can add marker ###SOCIAL_AUTH### to your custom felogin template. Typoscript for Felogin is loaded on main TS
+
+To custom renderer of generated links. Modify Typoscript like this :
+
+.. container:: table-row
+
+	Property
+		plugin.tx_felogin_pi1
+	Data type
+		string
+	Description
+		Custom renderer of links
+
+		::
+
+			plugin.tx_felogin_pi1{
+				socialauth.wrap = <ul>|</ul>
+				socialauth_provider{
+					facebook = TEXT
+					facebook{
+						typolink{
+							#Custom class or title
+							#ATagParams =
+						}
+						wrap = <li>|</li>
+						stdWrap.dataWrap = {LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:facebook.label}
+					}
+					twitter < .facebook
+					twitter{
+						stdWrap.dataWrap = {LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:twitter.label}
+					}
+					google < .facebook
+					google{
+						stdWrap.dataWrap = {LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:google.label}
+					}
+				}
+			}

@@ -37,6 +37,8 @@ $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_a
 
 if ($extConfig['providers.']['facebook.']['enabled'] || $extConfig['providers.']['google.']['enabled'] || $extConfig['providers.']['twitter.']['enabled']) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'][$_EXTKEY] = 'MV\SocialAuth\Hooks\LogOffHook->postProcessing';
+    //add marker to felogin if is loaded
+    if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('felogin')){
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'][$_EXTKEY] = 'MV\SocialAuth\Hooks\FeLoginHook->postProcContent';
+    }
 }
-
-

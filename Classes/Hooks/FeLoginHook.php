@@ -1,5 +1,5 @@
 <?php
-namespace MV\SocialAuth\Controller;
+namespace MV\SocialAuth\Hooks;
 
 /***************************************************************
  *
@@ -26,38 +26,34 @@ namespace MV\SocialAuth\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * AuthController
- */
-class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class FeLoginHook {
 
-    public function listAction(){
+    /**
+     * @param array $params
+     * @param $pObj
+     */
+    public function postProcContent($params, $pObj) {
+        $markerArray['###SOCIAL_AUTH###'] = '';
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
         $providers = array();
         foreach($extConfig['providers.'] as $key => $parameters){
             if($parameters['enabled'] == 1)
                 array_push($providers, rtrim($key, '.'));
         }
-        $this->view->assign('providers', $providers);
-    }
-
-    public function connectAction(){
-        if(!$this->request->getArguments('provider'))
-            throw new \Exception('Provider is required', 1325691094);
-        //redirect if login
-        if($GLOBALS['TSFE']->loginUser && is_array($GLOBALS['TSFE']->fe_user->user)){
-            $redirectionDelay = 0;
-            $this->uriBuilder->setTargetPageUid((int) $GLOBALS['TSFE']->id);
-            $redirectionUri = $this->uriBuilder->build();
-            $this->redirectToUri($redirectionUri);
+        if(is_array($providers) && count($providers) > 0){
+            rsort($providers);
+            foreach($providers as $provider){
+                $providerConf = $pObj->conf['socialauth_provider.'][$provider.'.'];
+                $providerConf['typolink.']= array(
+                    'parameter' => $GLOBALS['TSFE']->id,
+                    'additionalParams' => '&type=1316773681&tx_socialauth_pi1[provider]='.$provider,
+                    'useCashHash' => FALSE
+                );
+                $markerArray['###SOCIAL_AUTH###'] = $pObj->cObj->stdWrap($markerArray['###SOCIAL_AUTH###'], $providerConf);
+            }
+            //wrap all
+            $markerArray['###SOCIAL_AUTH###'] = $pObj->cObj->stdWrap($markerArray['###SOCIAL_AUTH###'], $pObj->conf['socialauth.']);
         }
-        return FALSE;
+        return $pObj->cObj->substituteMarkerArrayCached($params['content'], $markerArray);
     }
-
-    public function endpointAction(){
-        if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done']))
-            \Hybrid_Endpoint::process();
-    }
-
-
 }

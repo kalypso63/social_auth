@@ -6,6 +6,15 @@
 			<trans-unit id="logout.label">
 				<source>Logout</source>
 			</trans-unit>
+			<trans-unit id="facebook.label">
+                <source>Connect with Facebook</source>
+            </trans-unit>
+            <trans-unit id="google.label">
+                <source>Connect with Google</source>
+            </trans-unit>
+            <trans-unit id="twitter.label">
+                <source>Connect with Twitter</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>
