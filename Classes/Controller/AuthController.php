@@ -47,6 +47,8 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
         //redirect if login
         if($GLOBALS['TSFE']->loginUser && is_array($GLOBALS['TSFE']->fe_user->user)){
             $redirectionUri = $this->request->getArgument('redirect');
+            //sanitize url with logintype=logout
+            $redirectionUri = preg_replace('/(&?logintype=logout)/i', '', $redirectionUri);
             if(empty($redirectionUri)){
                 $this->uriBuilder->setTargetPageUid((int) $GLOBALS['TSFE']->id);
                 $redirectionUri = $this->uriBuilder->build();
