@@ -7,7 +7,7 @@ conf.py:
   copyright: 2015
   project: Social auth
   version: 1.0
-  release: 1.0.3
+  release: 1.0.4
   latex_documents:
   - - Index
     - social_auth.tex

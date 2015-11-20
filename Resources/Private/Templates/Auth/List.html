@@ -1,3 +1,4 @@
+{namespace socialauth=MV\SocialAuth\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="main">
@@ -9,7 +10,7 @@
             <f:if condition="{providers}">
                 <ul>
                     <f:for each="{providers}" as="provider">
-                        <li><f:link.page pageType="1316773681" additionalParams="{tx_socialauth_pi1:{provider:provider}}" noCacheHash="TRUE"><f:translate key="{provider}.label" /></f:link.page></li>
+                        <li><f:link.page pageType="1316773681" additionalParams="{tx_socialauth_pi1:{provider:provider,redirect:'{socialauth:currentUri()}'}}" noCacheHash="TRUE"><f:translate key="{provider}.label" /></f:link.page></li>
                     </f:for>
                 </ul>
             </f:if>

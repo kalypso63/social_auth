@@ -46,7 +46,7 @@ class FeLoginHook {
                 $providerConf = $pObj->conf['socialauth_provider.'][$provider.'.'];
                 $providerConf['typolink.']= array(
                     'parameter' => $GLOBALS['TSFE']->id,
-                    'additionalParams' => '&type=1316773681&tx_socialauth_pi1[provider]='.$provider,
+                    'additionalParams' => '&type=1316773681&tx_socialauth_pi1[provider]='.$provider.'&tx_socialauth_pi1[redirect]='.\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
                     'useCashHash' => FALSE
                 );
                 $markerArray['###SOCIAL_AUTH###'] = $pObj->cObj->stdWrap($markerArray['###SOCIAL_AUTH###'], $providerConf);

@@ -46,9 +46,11 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
             throw new \Exception('Provider is required', 1325691094);
         //redirect if login
         if($GLOBALS['TSFE']->loginUser && is_array($GLOBALS['TSFE']->fe_user->user)){
-            $redirectionDelay = 0;
-            $this->uriBuilder->setTargetPageUid((int) $GLOBALS['TSFE']->id);
-            $redirectionUri = $this->uriBuilder->build();
+            $redirectionUri = $this->request->getArgument('redirect');
+            if(empty($redirectionUri)){
+                $this->uriBuilder->setTargetPageUid((int) $GLOBALS['TSFE']->id);
+                $redirectionUri = $this->uriBuilder->build();
+            }
             $this->redirectToUri($redirectionUri);
         }
         return FALSE;

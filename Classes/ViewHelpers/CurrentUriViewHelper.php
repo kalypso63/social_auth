@@ -1,9 +1,6 @@
 <?php
-namespace MV\SocialAuth\Hooks;
+namespace MV\SocialAuth\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\DebugUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *
  *  Copyright notice
@@ -29,26 +26,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class LogOffHook {
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+
+class CurrentUriViewHelper extends AbstractViewHelper {
 
     /**
-     * Object manager
-     *
-     *
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @return string
      */
-    public $objectManager;
-    /**
-     * @param array $params
-     * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $pObj
-     */
-    public function postProcessing($params, $pObj) {
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        /** @var \MV\SocialAuth\Utility\AuthUtility $authUtility */
-        $authUtility = $this->objectManager->get('MV\\SocialAuth\\Utility\\AuthUtility');
-        $authUtility->logout();
-        session_start();
-        session_destroy();
-        $pObj->removeCookie('PHPSESSID');
+    public function render() {
+        $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+        return $url;
     }
+
 }
