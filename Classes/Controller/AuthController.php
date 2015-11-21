@@ -31,6 +31,10 @@ namespace MV\SocialAuth\Controller;
  */
 class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
+    /**
+     * List action
+     * @return void
+     */
     public function listAction(){
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
         $providers = array();
@@ -41,6 +45,11 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
         $this->view->assign('providers', $providers);
     }
 
+    /**
+     * Connect action
+     * @return bool
+     * @throws \Exception
+     */
     public function connectAction(){
         if(!$this->request->getArguments('provider'))
             throw new \Exception('Provider is required', 1325691094);
@@ -58,10 +67,12 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
         return FALSE;
     }
 
+    /**
+     * Endpoint action
+     * @return void
+     */
     public function endpointAction(){
         if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done']))
             \Hybrid_Endpoint::process();
     }
-
-
 }

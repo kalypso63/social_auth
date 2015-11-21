@@ -28,11 +28,20 @@ providers.google.scope = https://www.googleapis.com/auth/userinfo.profile
 # cat=Twitter/0; type=boolean; label=Twitter enable : Enable Single Sign On via Google for this System
 providers.twitter.enabled = 0
 
-# cat=Twitter/1; type=string; label=Twitter AppId
+# cat=Twitter/1; type=string; label=Twitter consumer key
 providers.twitter.keys.key =
 
-# cat=Twitter/2; type=string; label=Twitter Secret
+# cat=Twitter/2; type=string; label=Twitter consumer Secret
 providers.twitter.keys.secret =
+
+# cat=LinkedIn/0; type=boolean; label=LinkedIn enable : Enable Single Sign On via LinkedIn for this System
+providers.linkedin.enabled = 0
+
+# cat=LinkedIn/1; type=string; label=LinkedIn AppId
+providers.linkedin.keys.key =
+
+# cat=LinkedIn/2; type=string; label=LinkedIn Secret
+providers.linkedin.keys.secret =
 
 # cat=Storage users/O; type=int; label= Storage Pid : The Storage Pid of the Page, where the fe_users should be stored
 users.storagePid =

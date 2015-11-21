@@ -7,13 +7,16 @@
 				<source>Logout</source>
 			</trans-unit>
 			<trans-unit id="facebook.label">
-                <source>Connect with Facebook</source>
+                <source>Sign in with Facebook</source>
             </trans-unit>
             <trans-unit id="google.label">
-                <source>Connect with Google</source>
+                <source>Sign in with Google</source>
             </trans-unit>
             <trans-unit id="twitter.label">
-                <source>Connect with Twitter</source>
+                <source>Sign in with Twitter</source>
+            </trans-unit>
+            <trans-unit id="linkedin.label">
+                <source>Sign in with LinkedIn</source>
             </trans-unit>
 		</body>
 	</file>

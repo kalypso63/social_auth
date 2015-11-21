@@ -23,6 +23,10 @@ Extension manager: **Social auth**
 
 	Configure social providers
 
+**Bootstrap social CSS**
+
+Bootstrap social css is used by default on every views. You can disable it via Constant editor
+
 **Frontend plugin integration**
 
 Two ways exist to integrate social auth on FE
@@ -36,6 +40,8 @@ Two ways exist to integrate social auth on FE
 	<f:link.page pageType="1316773681" additionalParams="{tx_socialauth_pi1:{provider:'facebook',redirect:'{socialauth:currentUri()}'}}" noCacheHash="TRUE">
 		Facebook
 	</f:link.page>
+
+You can change redirect URL with a custom page (like profil page) using {f:uri.page()} viewhelper instead of {socialauth:currentUri()}
 
 **Integration with Felogin**
 

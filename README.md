@@ -1,5 +1,5 @@
 # social_auth
-Social Auth service for TYPO3 with Hybrid Auth API (Facebook, Twitter & Google +)
+Social Auth service for TYPO3 with Hybrid Auth API (Facebook, Twitter, Google + & LinkedIn)
 
 ## Installation instructions
 
@@ -18,6 +18,11 @@ Two ways exist to integrate social auth on FE
 
 `<f:link.page pageType="1316773681" additionalParams="{tx_socialauth_pi1:{provider:'facebook',redirect:'{socialauth:currentUri()}'}}" noCacheHash="TRUE">Facebook</f:link.page>`
 
+You can change redirect URL with a custom page (like profil page) using {f:uri.page()} viewhelper instead of {socialauth:currentUri()}
+
+## Bootstrap Social CSS
+
+Bootstrap social css is used by default on every views. You can disable it via Constant editor
 
 ## Integration with Felogin
 

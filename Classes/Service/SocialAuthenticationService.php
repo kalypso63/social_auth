@@ -1,12 +1,9 @@
 <?php
-
 namespace MV\SocialAuth\Service;
 
-use TYPO3\CMS\Core\Utility\DebugUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Sv\AbstractAuthenticationService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *
@@ -94,7 +91,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
     protected $arrayProvider = array(
         'facebook' => 1,
         'google' => 2,
-        'twitter' => 3
+        'twitter' => 3,
+        'linkedin' => 4
     );
 
     /**
@@ -277,5 +275,4 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
             $str = utf8_encode($str);
         return $str;
     }
-
 }

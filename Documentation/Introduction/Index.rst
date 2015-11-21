@@ -9,5 +9,5 @@
 What does it do?
 ================
 
-Social Auth service for TYPO3 with Hybrid Auth API (Facebook, Twitter & Google +)
+Social Auth service for TYPO3 with Hybrid Auth API (Facebook, Twitter, Google + & LinkedIn)
 

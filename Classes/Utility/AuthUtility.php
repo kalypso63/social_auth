@@ -77,6 +77,13 @@ class AuthUtility  {
                         'secret' => $this->extConfig['providers.']['twitter.']['keys.']['secret']
                     )
                 ),
+                'LinkedIn' => array (
+                    'enabled' =>  $this->extConfig['providers.']['linkedin.']['enabled'],
+                    'keys'    => array (
+                        'key' => $this->extConfig['providers.']['linkedin.']['keys.']['key'],
+                        'secret' => $this->extConfig['providers.']['linkedin.']['keys.']['secret']
+                    )
+                )
             ),
             'debug_mode' => FALSE,
             'debug_file' => '',

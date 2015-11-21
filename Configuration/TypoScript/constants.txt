@@ -1,0 +1,15 @@
+plugin.tx_socialauth {
+    view {
+        # cat=plugin.tx_socialauth/file; type=string; label=Path to template root (FE)
+        templateRootPath = EXT:social_auth/Resources/Private/Templates/
+        # cat=plugin.tx_socialauth/file; type=string; label=Path to template partials (FE)
+        partialRootPath = EXT:social_auth/Resources/Private/Partials/
+        # cat=plugin.tx_socialauth/file; type=string; label=Path to template layouts (FE)
+        layoutRootPath = EXT:social_auth/Resources/Private/Layouts/
+    }
+
+    settings{
+        # cat=plugin.tx_socialauth/enable; type=boolean; label=Enable bootstrap social css
+        includeBoostrapSocial = 1
+    }
+}

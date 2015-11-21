@@ -1,9 +1,6 @@
 <?php
 namespace MV\SocialAuth\Hooks;
 
-use TYPO3\CMS\Core\Utility\DebugUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *
  *  Copyright notice
@@ -34,10 +31,10 @@ class LogOffHook {
     /**
      * Object manager
      *
-     *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     public $objectManager;
+
     /**
      * @param array $params
      * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $pObj

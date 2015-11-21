@@ -17,7 +17,8 @@ $tca = array(
                 array('None', 0),
                 array('Facebook', 1),
                 array('Google', 2),
-                array('Twitter', 3)
+                array('Twitter', 3),
+                array('LinkedIn', 4)
             ),
             'size' => 1,
             'maxitems' => 1,

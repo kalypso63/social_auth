@@ -1,5 +1,6 @@
 <?php
 namespace MV\SocialAuth\Hooks;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *
@@ -44,11 +45,12 @@ class FeLoginHook {
             rsort($providers);
             foreach($providers as $provider){
                 $providerConf = $pObj->conf['socialauth_provider.'][$provider.'.'];
-                $providerConf['typolink.']= array(
+                $customTypolink = array(
                     'parameter' => $GLOBALS['TSFE']->id,
                     'additionalParams' => '&type=1316773681&tx_socialauth_pi1[provider]='.$provider.'&tx_socialauth_pi1[redirect]='.\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
                     'useCashHash' => FALSE
                 );
+                $providerConf['typolink.'] = ($providerConf['typolink.']) ? array_merge($providerConf['typolink.'], $customTypolink) : $customTypolink;
                 $markerArray['###SOCIAL_AUTH###'] = $pObj->cObj->stdWrap($markerArray['###SOCIAL_AUTH###'], $providerConf);
             }
             //wrap all

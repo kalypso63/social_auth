@@ -1,3 +1,14 @@
+plugin.tx_socialauth {
+    view {
+        templateRootPaths.0 = {$plugin.tx_socialauth.view.templateRootPath}
+        partialRootPaths.0 = {$plugin.tx_socialauth.view.partialRootPath}
+        layoutRootPaths.0 = {$plugin.tx_socialauth.view.layoutRootPath}
+    }
+    settings{
+        includeBoostrapSocial = {$plugin.tx_socialauth.settings.includeBoostrapSocial}
+    }
+}
+
 HybridAuth = PAGE
 HybridAuth {
     typeNum = 1316773681
@@ -35,26 +46,40 @@ HybridEndPoint {
     }
 }
 
+#bootstrap-social css with fontawesome
+[globalVar = LIT:1 = {$plugin.tx_socialauth.settings.includeBoostrapSocial}]
+    page.includeCSS{
+        1448118394 = EXT:social_auth/Resources/Public/Css/bootstrap-social.min.css
+        1448118395 = https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css
+        1448118395.external = 1
+        1448118395.excludeFromConcatenation = 1
+        1448118395.disableCompression = 1
+    }
+[global]
+
 #felogin
 plugin.tx_felogin_pi1{
-    socialauth.wrap = <ul>|</ul>
+    socialauth.wrap = |
     socialauth_provider{
         facebook = TEXT
         facebook{
             typolink{
-                #Custom class or title
-                #ATagParams =
+                #Custom class like bootstrap social or title
+                ATagParams = class="btn btn-block btn-social btn-facebook"
             }
-            wrap = <li>|</li>
-            stdWrap.dataWrap = {LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:facebook.label}
+            #wrap provider
+            wrap = |
+            stdWrap.dataWrap = <span class="fa fa-facebook"></span>{LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:facebook.label}
         }
         twitter < .facebook
         twitter{
-            stdWrap.dataWrap = {LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:twitter.label}
+            typolink.ATagParams = class="btn btn-block btn-social btn-twitter"
+            stdWrap.dataWrap = <span class="fa fa-twitter"></span>{LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:twitter.label}
         }
         google < .facebook
         google{
-            stdWrap.dataWrap = {LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:google.label}
+            typolink.ATagParams = class="btn btn-block btn-social btn-google"
+            stdWrap.dataWrap = <span class="fa fa-google"></span>{LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:google.label}
         }
     }
 }

@@ -4,15 +4,13 @@
 <f:section name="main">
     <f:security.ifAuthenticated>
         <f:then>
-            <a href="/?logintype=logout"><f:translate key="logout.label" /></a>
+            <f:link.page additionalParams="{logintype:'logout'}" addQueryString="TRUE" title="{f:translate(key:'logout.label')}" noCacheHash="TRUE"><f:translate key="logout.label" /></f:link.page>
         </f:then>
         <f:else>
             <f:if condition="{providers}">
-                <ul>
-                    <f:for each="{providers}" as="provider">
-                        <li><f:link.page pageType="1316773681" additionalParams="{tx_socialauth_pi1:{provider:provider,redirect:'{socialauth:currentUri()}'}}" noCacheHash="TRUE"><f:translate key="{provider}.label" /></f:link.page></li>
-                    </f:for>
-                </ul>
+                <f:for each="{providers}" as="provider">
+                    <f:link.page pageType="1316773681" additionalParams="{tx_socialauth_pi1:{provider:provider,redirect:'{socialauth:currentUri()}'}}" noCacheHash="TRUE" class="btn btn-block btn-social btn-{provider}"><span class="fa fa-{provider}"></span><f:translate key="{provider}.label" /></f:link.page>
+                </f:for>
             </f:if>
         </f:else>
     </f:security.ifAuthenticated>
