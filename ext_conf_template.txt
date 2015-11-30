@@ -49,6 +49,3 @@ users.storagePid =
 # cat=Storage users/1; type=string; label= Default user group (uid commal list)
 users.defaultGroup =
 
-# cat=Storage users/2; type=string; label= tx_extbase_type (If subclass is needed)
-users.extbaseType =
-

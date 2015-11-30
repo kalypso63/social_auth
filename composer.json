@@ -4,11 +4,12 @@
     "description": "Authentification via social auth (Facebook, Twitter, Google + & LinkedIn)",
     "keywords": [
         "TYPO3",
-        "extension"
+        "extension",
+        "HybridAuth"
     ],
     "homepage": "http://typo3.org",
     "license": ["GPL-2.0+"],
-    "version": "1.0.5",
+    "version": "1.0.6",
     "config": {
         "vendor-dir": "Resources/Public/Php"
     },
