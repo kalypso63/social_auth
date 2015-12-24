@@ -13,6 +13,7 @@ $tca = array(
         'label' => 'LLL:EXT:social_auth/Resources/Private/Language/locallang_db.xlf:fe_users.tx_socialauth_source',
         'config' => array(
             'type' => 'select',
+            'renderType' => 'selectSingle',
             'items' => array(
                 array('None', 0),
                 array('Facebook', 1),

@@ -84,6 +84,18 @@ plugin.tx_felogin_pi1{
     }
 }
 
+config.tx_extbase.persistence.classes{
+    MV\SocialAuth\Domain\Model\User {
+        mapping {
+            tableName = fe_users
+            columns {
+                tx_socialauth_source.mapOnProperty = source
+                tx_socialauth_identifier.mapOnProperty = identifier
+            }
+        }
+    }
+}
+
 
 
 
