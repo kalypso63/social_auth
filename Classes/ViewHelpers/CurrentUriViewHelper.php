@@ -29,15 +29,15 @@ namespace MV\SocialAuth\ViewHelpers;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-
-class CurrentUriViewHelper extends AbstractViewHelper {
+class CurrentUriViewHelper extends AbstractViewHelper
+{
 
     /**
      * @return string
      */
-    public function render() {
+    public function render()
+    {
         $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         return $url;
     }
-
 }

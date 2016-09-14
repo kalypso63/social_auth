@@ -31,7 +31,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  ***************************************************************/
 
 
-class SocialAuthenticationService extends AbstractAuthenticationService {
+class SocialAuthenticationService extends AbstractAuthenticationService
+{
     /**
      * The prefix Id
      */
@@ -111,7 +112,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
     /**
      * @return bool
      */
-    public function init() {
+    public function init()
+    {
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $this->signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
         $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
@@ -129,7 +131,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
      * @param AbstractUserAuthentication $parentObject Calling object
      * @return void
      */
-    public function initAuth($subType, array $loginData, array $authenticationInformation, AbstractUserAuthentication &$parentObject) {
+    public function initAuth($subType, $loginData, $authenticationInformation, $parentObject)
+    {
         $this->authUtility = $this->objectManager->get('MV\\SocialAuth\\Utility\\AuthUtility');
         // Store login and authetication data
         $this->loginData = $loginData;
@@ -143,14 +146,15 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
      *
      * @return array User informations
      */
-    public function getUser(){
-        $user = NULL;
+    public function getUser()
+    {
+        $user = null;
         session_start();
         // then grab the user profile
-        if($this->provider && $this->isServiceAvailable()){
+        if ($this->provider && $this->isServiceAvailable()) {
             //get user
             $hybridUser = $this->authUtility->authenticate($this->provider);
-            if($hybridUser){
+            if ($hybridUser) {
                 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
                     /** @var \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface $saltedpasswordsInstance */
                     $saltedpasswordsInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
@@ -163,7 +167,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
                     'lastlogin' => time(),
                     'crdate' => time(),
                     'tstamp' => time(),
-                    'usergroup' => $this->extConfig['users.']['defaultGroup'],
+                    'usergroup' => (int) $this->extConfig['users.']['defaultGroup'],
                     'name' => $this->cleanData($hybridUser->displayName),
                     'first_name' => $this->cleanData($hybridUser->firstName),
                     'last_name' => $this->cleanData($hybridUser->lastName),
@@ -179,7 +183,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
                     'tx_socialauth_source' => $this->arrayProvider[$this->provider]
                 );
                 //grab image
-                if(!empty($hybridUser->photoURL)){
+                if (!empty($hybridUser->photoURL)) {
                     $path = PATH_site . 'uploads/pics/';
                     $uniqueName = strtolower($this->provider .'_' .$hybridUser->identifier) . '.jpg';
                     $file = file_get_contents($hybridUser->photoURL);
@@ -192,18 +196,18 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
 
                 //if the user exists in the TYPO3 database
                 $exist = $this->userExist($hybridUser->identifier);
-                if($exist){
-                    $new = FALSE;
+                if ($exist) {
+                    $new = false;
                     $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid='.$exist[0]['uid'], $fields);
                     $userUid = $exist[0]['uid'];
-                }else{
-                    $new = TRUE;
+                } else {
+                    $new = true;
                     $GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_users', $fields);
                     $userUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
                 }
                 $user = $this->getUserInfos($userUid);
                 $user['new'] = $new;
-                $user['fromHybrid'] = TRUE;
+                $user['fromHybrid'] = true;
                 if (isset($user['username'])) {
                     $this->login['uname'] = $user['username'];
                 }
@@ -218,13 +222,15 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
      * @param $user array record
      * @return int One of these values: 100 = Pass, 0 = Failed, 200 = Success
      */
-    public function authUser(&$user){
+    public function authUser(&$user)
+    {
         if (!$user['fromHybrid']) {
             return self::STATUS_AUTHENTICATION_FAILURE_CONTINUE;
         }
         $result = self::STATUS_AUTHENTICATION_FAILURE_CONTINUE;
-        if ($user)
+        if ($user) {
             $result = self::STATUS_AUTHENTICATION_SUCCESS_BREAK;
+        }
         //signal slot authUser
         $this->signalSlotDispatcher->dispatch(__CLASS__, 'authUser', array($user, &$result, $this));
         return $result;
@@ -236,7 +242,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
      *
      * @return boolean
      */
-    protected function isServiceAvailable() {
+    protected function isServiceAvailable()
+    {
         return (boolean) $this->extConfig['providers.'][strtolower($this->provider) . '.']['enabled'];
     }
 
@@ -245,8 +252,9 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
      * @param $identifier
      * @return mixed
      */
-    protected function userExist($identifier){
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'fe_users', '1=1 AND deleted=0 AND tx_socialauth_identifier LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($identifier, 'fe_users').'"', '','',1);
+    protected function userExist($identifier)
+    {
+        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'fe_users', '1=1 AND deleted=0 AND tx_socialauth_identifier LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($identifier, 'fe_users').'"', '', '', 1);
     }
 
     /**
@@ -254,7 +262,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
      * @param $uid integer
      * @return user array
      */
-    protected function getUserInfos($uid){
+    protected function getUserInfos($uid)
+    {
         $where = 'uid = '.intval($uid).' AND deleted=0';
         return $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'fe_users', $where);
     }
@@ -265,14 +274,16 @@ class SocialAuthenticationService extends AbstractAuthenticationService {
      * @param string $str
      * @return string
      */
-    protected function cleanData($str) {
+    protected function cleanData($str)
+    {
         $str = strip_tags($str);
         //Remove extra spaces
         $str = preg_replace('/\s{2,}/', ' ', $str);
         //delete space end & begin
         $str = trim($str);
-        if (FALSE === mb_check_encoding($str, 'UTF-8'))
+        if (false === mb_check_encoding($str, 'UTF-8')) {
             $str = utf8_encode($str);
+        }
         return $str;
     }
 }

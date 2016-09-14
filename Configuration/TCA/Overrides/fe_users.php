@@ -1,6 +1,6 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-    die ('Access denied.');
+    die('Access denied.');
 }
 
 
@@ -38,4 +38,3 @@ $tca = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $tca);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('fe_users', '--div--;LLL:EXT:social_auth/Resources/Private/Language/locallang_db.xlf:fe_users.tab.social, tx_socialauth_source, tx_socialauth_identifier');
-

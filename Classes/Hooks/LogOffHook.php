@@ -26,7 +26,8 @@ namespace MV\SocialAuth\Hooks;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class LogOffHook {
+class LogOffHook
+{
 
     /**
      * Object manager
@@ -39,7 +40,8 @@ class LogOffHook {
      * @param array $params
      * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $pObj
      */
-    public function postProcessing($params, $pObj) {
+    public function postProcessing($params, $pObj)
+    {
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         /** @var \MV\SocialAuth\Utility\AuthUtility $authUtility */
         $authUtility = $this->objectManager->get('MV\\SocialAuth\\Utility\\AuthUtility');

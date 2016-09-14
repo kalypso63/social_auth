@@ -9,32 +9,33 @@
 /**
  * The Hybrid_User class represents the current logged in user
  */
-class Hybrid_User {
+class Hybrid_User
+{
 
-	/**
-	 * The ID (name) of the connected provider
-	 * @var mixed
-	 */
-	public $providerId = null;
+    /**
+     * The ID (name) of the connected provider
+     * @var mixed
+     */
+    public $providerId = null;
 
-	/**
-	 * Timestamp connection to the provider
-	 * @var int
-	 */
-	public $timestamp = null;
+    /**
+     * Timestamp connection to the provider
+     * @var int
+     */
+    public $timestamp = null;
 
-	/**
-	 * User profile, contains the list of fields available in the normalized user profile structure used by HybridAuth
-	 * @var Hybrid_User_Profile
-	 */
-	public $profile = null;
+    /**
+     * User profile, contains the list of fields available in the normalized user profile structure used by HybridAuth
+     * @var Hybrid_User_Profile
+     */
+    public $profile = null;
 
-	/**
-	 * Initialize the user object
-	 */
-	function __construct() {
-		$this->timestamp = time();
-		$this->profile = new Hybrid_User_Profile();
-	}
-
+    /**
+     * Initialize the user object
+     */
+    public function __construct()
+    {
+        $this->timestamp = time();
+        $this->profile = new Hybrid_User_Profile();
+    }
 }

@@ -10,4 +10,3 @@ $result = array(
 );
 
 return $result;
-?>

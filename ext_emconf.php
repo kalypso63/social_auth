@@ -11,24 +11,24 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Social auth',
-	'description' => 'Authentification via social auth (Facebook, Twitter, Google + & LinkedIn)',
-	'category' => 'plugin',
-	'author' => 'VANCLOOSTER Mickael',
-	'author_email' => 'vanclooster.mickael@gmail.com',
-	'state' => 'beta',
-	'internal' => '',
-	'uploadfolder' => 0,
-	'createDirs' => '',
-	'clearCacheOnLoad' => 0,
-	'version' => '1.0.7',
-	'constraints' => array(
-		'depends' => array(
-			'typo3' => '6.2.0-7.6.99'
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
+    'title' => 'Social auth',
+    'description' => 'Authentification via social auth (Facebook, Twitter, Google + & LinkedIn)',
+    'category' => 'plugin',
+    'author' => 'VANCLOOSTER Mickael',
+    'author_email' => 'vanclooster.mickael@gmail.com',
+    'state' => 'beta',
+    'internal' => '',
+    'uploadfolder' => 0,
+    'createDirs' => '',
+    'clearCacheOnLoad' => 0,
+    'version' => '1.0.8',
+    'constraints' => array(
+        'depends' => array(
+            'typo3' => '6.2.0-7.6.99'
+        ),
+        'conflicts' => array(
+        ),
+        'suggests' => array(
+        ),
+    ),
 );

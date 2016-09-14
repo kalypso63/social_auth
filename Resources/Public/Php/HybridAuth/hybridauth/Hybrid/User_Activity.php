@@ -13,43 +13,44 @@
  *
  * http://hybridauth.sourceforge.net/userguide/Profile_Data_User_Activity.html
  */
-class Hybrid_User_Activity {
+class Hybrid_User_Activity
+{
 
-	/**
-	 * Activity id on the provider side, usually given as integer
-	 * @var mixed
-	 */
-	public $id = null;
+    /**
+     * Activity id on the provider side, usually given as integer
+     * @var mixed
+     */
+    public $id = null;
 
-	/**
-	 * Activity date of creation
-	 * @var int
-	 */
-	public $date = null;
+    /**
+     * Activity date of creation
+     * @var int
+     */
+    public $date = null;
 
-	/**
-	 * Activity content as a string
-	 * @var string
-	 */
-	public $text = null;
+    /**
+     * Activity content as a string
+     * @var string
+     */
+    public $text = null;
 
-	/**
-	 * User who created the activity
-	 * @var stdClass
-	 */
-	public $user = null;
+    /**
+     * User who created the activity
+     * @var stdClass
+     */
+    public $user = null;
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->user = new stdClass();
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->user = new stdClass();
 
-		// typically, we should have a few information about the user who created the event from social apis
-		$this->user->identifier = null;
-		$this->user->displayName = null;
-		$this->user->profileURL = null;
-		$this->user->photoURL = null;
-	}
-
+        // typically, we should have a few information about the user who created the event from social apis
+        $this->user->identifier = null;
+        $this->user->displayName = null;
+        $this->user->profileURL = null;
+        $this->user->photoURL = null;
+    }
 }

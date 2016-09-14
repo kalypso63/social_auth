@@ -1,7 +1,7 @@
 <?php
 namespace MV\SocialAuth\Domain\Repository;
 
-    /***************************************************************
+/***************************************************************
      *
      *  Copyright notice
      *
@@ -31,5 +31,4 @@ namespace MV\SocialAuth\Domain\Repository;
  */
 class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-
 }

@@ -1,16 +1,16 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
+    die('Access denied.');
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'MV.' . $_EXTKEY,
-	'Pi1',
-	array(
-		'Auth' => 'list, connect, endpoint',
-	),
-	// non-cacheable actions
-	array(
+    'MV.' . $_EXTKEY,
+    'Pi1',
+    array(
+        'Auth' => 'list, connect, endpoint',
+    ),
+    // non-cacheable actions
+    array(
         'Auth' => 'connect, endpoint'
     )
 );
@@ -22,7 +22,7 @@ if (!defined('TYPO3_MODE')) {
         'title' => 'Social Authentification Service',
         'description' => 'authentication for users from social providers (facebook, twitter...)',
         'subtype' => 'authUserFE,getUserFE',
-        'available' => TRUE,
+        'available' => true,
         'priority' => 82, /* will be called before default typo3 authentication service */
         'quality' => 82,
         'os' => '',
@@ -38,7 +38,7 @@ $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_a
 if ($extConfig['providers.']['facebook.']['enabled'] || $extConfig['providers.']['google.']['enabled'] || $extConfig['providers.']['twitter.']['enabled']) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'][$_EXTKEY] = 'MV\SocialAuth\Hooks\LogOffHook->postProcessing';
     //add marker to felogin if is loaded
-    if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('felogin')){
+    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('felogin')) {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'][$_EXTKEY] = 'MV\SocialAuth\Hooks\FeLoginHook->postProcContent';
     }
 }

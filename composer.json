@@ -9,7 +9,7 @@
     ],
     "homepage": "http://typo3.org",
     "license": ["GPL-2.0+"],
-    "version": "1.0.7",
+    "version": "1.0.8",
     "config": {
         "vendor-dir": "Resources/Public/Php"
     },

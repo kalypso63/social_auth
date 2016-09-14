@@ -3,6 +3,7 @@ namespace MV\SocialAuth\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -33,7 +34,8 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  *
  * @package MV\SocialAuth\Utility
  */
-class AuthUtility  {
+class AuthUtility
+{
 
     /**
      * @var array
@@ -48,44 +50,45 @@ class AuthUtility  {
     /**
      * initializeObject
      */
-    public function initializeObject() {
+    public function initializeObject()
+    {
         $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
         $this->config = array(
             'base_url' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . '?type=1316773682',
-            'providers' => array (
-                'Facebook' => array (
+            'providers' => array(
+                'Facebook' => array(
                     'enabled' =>  $this->extConfig['providers.']['facebook.']['enabled'],
-                    'keys'    => array (
+                    'keys'    => array(
                         'id' => $this->extConfig['providers.']['facebook.']['keys.']['id'],
                         'secret' => $this->extConfig['providers.']['facebook.']['keys.']['secret']
                     ),
                     'scope'   => $this->extConfig['providers.']['facebook.']['scope'],
                     'display' => ($this->extConfig['providers.']['facebook.']['display']) ? $this->extConfig['provider.']['facebook.']['display'] : 'page'
                 ),
-                'Google' => array (
+                'Google' => array(
                     'enabled' =>  $this->extConfig['providers.']['google.']['enabled'],
-                    'keys'    => array (
+                    'keys'    => array(
                         'id' => $this->extConfig['providers.']['google.']['keys.']['id'],
                         'secret' => $this->extConfig['providers.']['google.']['keys.']['secret']
                     ),
                     'scope'   => $this->extConfig['providers.']['google.']['scope']
                 ),
-                'Twitter' => array (
+                'Twitter' => array(
                     'enabled' =>  $this->extConfig['providers.']['twitter.']['enabled'],
-                    'keys'    => array (
+                    'keys'    => array(
                         'key' => $this->extConfig['providers.']['twitter.']['keys.']['key'],
                         'secret' => $this->extConfig['providers.']['twitter.']['keys.']['secret']
                     )
                 ),
-                'LinkedIn' => array (
+                'LinkedIn' => array(
                     'enabled' =>  $this->extConfig['providers.']['linkedin.']['enabled'],
-                    'keys'    => array (
+                    'keys'    => array(
                         'key' => $this->extConfig['providers.']['linkedin.']['keys.']['key'],
                         'secret' => $this->extConfig['providers.']['linkedin.']['keys.']['secret']
                     )
                 )
             ),
-            'debug_mode' => FALSE,
+            'debug_mode' => false,
             'debug_file' => '',
         );
     }
@@ -96,12 +99,13 @@ class AuthUtility  {
      *
      *  @return \Hybrid_User_Profile|FALSE
      */
-    public function authenticate($provider) {
-        try{
+    public function authenticate($provider)
+    {
+        try {
             $hybridauth = new \Hybrid_Auth($this->config);
             $service = $hybridauth->authenticate($provider);
             $socialUser = $service->getUserProfile();
-        } catch( \Exception $exception ){
+        } catch (\Exception $exception) {
             switch ($exception->getCode()) {
                 case 0:
                     $error = 'Unspecified error.';
@@ -133,15 +137,15 @@ class AuthUtility  {
         if ($socialUser) {
             return $socialUser;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
     /**
      * logout from all providers when typo3 logout takes place
      */
-    public function logout() {
+    public function logout()
+    {
         (new \Hybrid_Auth($this->config))->logoutAllProviders();
     }
-
 }

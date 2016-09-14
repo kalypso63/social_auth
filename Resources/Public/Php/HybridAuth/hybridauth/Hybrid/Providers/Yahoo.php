@@ -18,259 +18,271 @@
 /**
  * Hybrid_Providers_Yahoo - Yahoo provider adapter based on OAuth1 protocol
  */
-class Hybrid_Providers_Yahoo extends Hybrid_Provider_Model_OAuth1 {
+class Hybrid_Providers_Yahoo extends Hybrid_Provider_Model_OAuth1
+{
 
-	/**
-	 * {@inheritdoc}
-	 */
-	function initialize() {
-		parent::initialize();
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        parent::initialize();
 
-		// Provider api end-points
-		$this->api->api_base_url = 'https://social.yahooapis.com/v1/';
-		$this->api->authorize_url = 'https://api.login.yahoo.com/oauth/v2/request_auth';
-		$this->api->request_token_url = 'https://api.login.yahoo.com/oauth/v2/get_request_token';
-		$this->api->access_token_url = 'https://api.login.yahoo.com/oauth/v2/get_token';
-	}
+        // Provider api end-points
+        $this->api->api_base_url = 'https://social.yahooapis.com/v1/';
+        $this->api->authorize_url = 'https://api.login.yahoo.com/oauth/v2/request_auth';
+        $this->api->request_token_url = 'https://api.login.yahoo.com/oauth/v2/get_request_token';
+        $this->api->access_token_url = 'https://api.login.yahoo.com/oauth/v2/get_token';
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	function getUserProfile() {
-		$userId = $this->getCurrentUserId();
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserProfile()
+    {
+        $userId = $this->getCurrentUserId();
 
-		$parameters = array();
-		$parameters['format'] = 'json';
+        $parameters = array();
+        $parameters['format'] = 'json';
 
-		$response = $this->api->get('user/' . $userId . '/profile', $parameters);
+        $response = $this->api->get('user/' . $userId . '/profile', $parameters);
 
-		if (!isset($response->profile)) {
-			throw new Exception("User profile request failed! {$this->providerId} returned an invalid response: " . Hybrid_Logger::dumpData( $response ), 6);
-		}
+        if (!isset($response->profile)) {
+            throw new Exception("User profile request failed! {$this->providerId} returned an invalid response: " . Hybrid_Logger::dumpData($response), 6);
+        }
 
-		$data = $response->profile;
+        $data = $response->profile;
 
-		$this->user->profile->identifier = (property_exists($data, 'guid')) ? $data->guid : "";
-		$this->user->profile->firstName = (property_exists($data, 'givenName')) ? $data->givenName : "";
-		$this->user->profile->lastName = (property_exists($data, 'familyName')) ? $data->familyName : "";
-		$this->user->profile->displayName = (property_exists($data, 'nickname')) ? trim($data->nickname) : "";
-		$this->user->profile->profileURL = (property_exists($data, 'profileUrl')) ? $data->profileUrl : "";
-		$this->user->profile->gender = (property_exists($data, 'gender')) ? $data->gender : "";
+        $this->user->profile->identifier = (property_exists($data, 'guid')) ? $data->guid : "";
+        $this->user->profile->firstName = (property_exists($data, 'givenName')) ? $data->givenName : "";
+        $this->user->profile->lastName = (property_exists($data, 'familyName')) ? $data->familyName : "";
+        $this->user->profile->displayName = (property_exists($data, 'nickname')) ? trim($data->nickname) : "";
+        $this->user->profile->profileURL = (property_exists($data, 'profileUrl')) ? $data->profileUrl : "";
+        $this->user->profile->gender = (property_exists($data, 'gender')) ? $data->gender : "";
 
-		if ($this->user->profile->gender == "F") {
-			$this->user->profile->gender = "female";
-		}
+        if ($this->user->profile->gender == "F") {
+            $this->user->profile->gender = "female";
+        }
 
-		if ($this->user->profile->gender == "M") {
-			$this->user->profile->gender = "male";
-		}
+        if ($this->user->profile->gender == "M") {
+            $this->user->profile->gender = "male";
+        }
 
-		if (isset($data->emails)) {
-			$email = "";
-			foreach ($data->emails as $v) {
-				if (isset($v->primary) && $v->primary) {
-					$email = (property_exists($v, 'handle')) ? $v->handle : "";
+        if (isset($data->emails)) {
+            $email = "";
+            foreach ($data->emails as $v) {
+                if (isset($v->primary) && $v->primary) {
+                    $email = (property_exists($v, 'handle')) ? $v->handle : "";
 
-					break;
-				}
-			}
+                    break;
+                }
+            }
 
-			$this->user->profile->email = $email;
-			$this->user->profile->emailVerified = $email;
-		}
+            $this->user->profile->email = $email;
+            $this->user->profile->emailVerified = $email;
+        }
 
-		$this->user->profile->age = (property_exists($data, 'displayAge')) ? $data->displayAge : "";
-		$this->user->profile->photoURL = (property_exists($data, 'image')) ? $data->image->imageUrl : "";
+        $this->user->profile->age = (property_exists($data, 'displayAge')) ? $data->displayAge : "";
+        $this->user->profile->photoURL = (property_exists($data, 'image')) ? $data->image->imageUrl : "";
 
-		$this->user->profile->address = (property_exists($data, 'location')) ? $data->location : "";
-		$this->user->profile->language = (property_exists($data, 'lang')) ? $data->lang : "";
+        $this->user->profile->address = (property_exists($data, 'location')) ? $data->location : "";
+        $this->user->profile->language = (property_exists($data, 'lang')) ? $data->lang : "";
 
-		return $this->user->profile;
-	}
+        return $this->user->profile;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	function getUserContacts() {
-		$userId = $this->getCurrentUserId();
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserContacts()
+    {
+        $userId = $this->getCurrentUserId();
 
-		$parameters = array();
-		$parameters['format'] = 'json';
-		$parameters['count'] = 'max';
+        $parameters = array();
+        $parameters['format'] = 'json';
+        $parameters['count'] = 'max';
 
-		$response = $this->api->get('user/' . $userId . '/contacts', $parameters);
+        $response = $this->api->get('user/' . $userId . '/contacts', $parameters);
 
-		if ($this->api->http_code != 200) {
-			throw new Exception('User contacts request failed! ' . $this->providerId . ' returned an error: ' . $this->errorMessageByStatus($this->api->http_code));
-		}
+        if ($this->api->http_code != 200) {
+            throw new Exception('User contacts request failed! ' . $this->providerId . ' returned an error: ' . $this->errorMessageByStatus($this->api->http_code));
+        }
 
-		if (!isset($response->contacts) || !isset($response->contacts->contact) || ( isset($response->errcode) && $response->errcode != 0 )) {
-			return array();
-		}
+        if (!isset($response->contacts) || !isset($response->contacts->contact) || (isset($response->errcode) && $response->errcode != 0)) {
+            return array();
+        }
 
-		$contacts = array();
+        $contacts = array();
 
-		foreach ($response->contacts->contact as $item) {
-			$uc = new Hybrid_User_Contact();
+        foreach ($response->contacts->contact as $item) {
+            $uc = new Hybrid_User_Contact();
 
-			$uc->identifier = $this->selectGUID($item);
-			$uc->email = $this->selectEmail($item->fields);
-			$uc->displayName = $this->selectName($item->fields);
-			$uc->photoURL = $this->selectPhoto($item->fields);
+            $uc->identifier = $this->selectGUID($item);
+            $uc->email = $this->selectEmail($item->fields);
+            $uc->displayName = $this->selectName($item->fields);
+            $uc->photoURL = $this->selectPhoto($item->fields);
 
-			$contacts[] = $uc;
-		}
+            $contacts[] = $uc;
+        }
 
-		return $contacts;
-	}
+        return $contacts;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	function getUserActivity($stream) {
-		$userId = $this->getCurrentUserId();
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserActivity($stream)
+    {
+        $userId = $this->getCurrentUserId();
 
-		$parameters = array();
-		$parameters['format'] = 'json';
-		$parameters['count'] = 'max';
+        $parameters = array();
+        $parameters['format'] = 'json';
+        $parameters['count'] = 'max';
 
-		$response = $this->api->get('user/' . $userId . '/updates', $parameters);
+        $response = $this->api->get('user/' . $userId . '/updates', $parameters);
 
-		if (!$response->updates || $this->api->http_code != 200) {
-			throw new Exception('User activity request failed! ' . $this->providerId . ' returned an error: ' . $this->errorMessageByStatus($this->api->http_code));
-		}
+        if (!$response->updates || $this->api->http_code != 200) {
+            throw new Exception('User activity request failed! ' . $this->providerId . ' returned an error: ' . $this->errorMessageByStatus($this->api->http_code));
+        }
 
-		$activities = array();
+        $activities = array();
 
-		foreach ($response->updates as $item) {
-			$ua = new Hybrid_User_Activity();
+        foreach ($response->updates as $item) {
+            $ua = new Hybrid_User_Activity();
 
-			$ua->id = (property_exists($item, 'collectionID')) ? $item->collectionID : "";
-			$ua->date = (property_exists($item, 'lastUpdated')) ? $item->lastUpdated : "";
-			$ua->text = (property_exists($item, 'loc_longForm')) ? $item->loc_longForm : "";
+            $ua->id = (property_exists($item, 'collectionID')) ? $item->collectionID : "";
+            $ua->date = (property_exists($item, 'lastUpdated')) ? $item->lastUpdated : "";
+            $ua->text = (property_exists($item, 'loc_longForm')) ? $item->loc_longForm : "";
 
-			$ua->user->identifier = (property_exists($item, 'profile_guid')) ? $item->profile_guid : "";
-			$ua->user->displayName = (property_exists($item, 'profile_nickname')) ? $item->profile_nickname : "";
-			$ua->user->profileURL = (property_exists($item, 'profile_profileUrl')) ? $item->profile_profileUrl : "";
-			$ua->user->photoURL = (property_exists($item, 'profile_displayImage')) ? $item->profile_displayImage : "";
+            $ua->user->identifier = (property_exists($item, 'profile_guid')) ? $item->profile_guid : "";
+            $ua->user->displayName = (property_exists($item, 'profile_nickname')) ? $item->profile_nickname : "";
+            $ua->user->profileURL = (property_exists($item, 'profile_profileUrl')) ? $item->profile_profileUrl : "";
+            $ua->user->photoURL = (property_exists($item, 'profile_displayImage')) ? $item->profile_displayImage : "";
 
-			$activities[] = $ua;
-		}
+            $activities[] = $ua;
+        }
 
-		if ($stream == "me") {
-			$userId = $this->getCurrentUserId();
-			$my_activities = array();
+        if ($stream == "me") {
+            $userId = $this->getCurrentUserId();
+            $my_activities = array();
 
-			foreach ($activities as $a) {
-				if ($a->user->identifier == $userId) {
-					$my_activities[] = $a;
-				}
-			}
+            foreach ($activities as $a) {
+                if ($a->user->identifier == $userId) {
+                    $my_activities[] = $a;
+                }
+            }
 
-			return $my_activities;
-		}
+            return $my_activities;
+        }
 
-		return $activities;
-	}
+        return $activities;
+    }
 
-	/**
-	 * Utility function for returning values from XML-like objects
-	 *
-	 * @param stdClass $vs Object
-	 * @param string   $t  Property name
-	 * @return mixed
-	 */
-	function select($vs, $t) {
-		foreach ($vs as $v) {
-			if ($v->type == $t) {
-				return $v;
-			}
-		}
-		return null;
-	}
+    /**
+     * Utility function for returning values from XML-like objects
+     *
+     * @param stdClass $vs Object
+     * @param string   $t  Property name
+     * @return mixed
+     */
+    public function select($vs, $t)
+    {
+        foreach ($vs as $v) {
+            if ($v->type == $t) {
+                return $v;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Parses guid
-	 *
-	 * @param stdClass $v Object
-	 * @return string
-	 */
-	function selectGUID($v) {
-		return (property_exists($v, 'id')) ? $v->id : "";
-	}
+    /**
+     * Parses guid
+     *
+     * @param stdClass $v Object
+     * @return string
+     */
+    public function selectGUID($v)
+    {
+        return (property_exists($v, 'id')) ? $v->id : "";
+    }
 
-	/**
-	 * Parses user name
-	 *
-	 * @param stdClass $v Object
-	 * @return string
-	 */
-	function selectName($v) {
-		$s = $this->select($v, 'name');
+    /**
+     * Parses user name
+     *
+     * @param stdClass $v Object
+     * @return string
+     */
+    public function selectName($v)
+    {
+        $s = $this->select($v, 'name');
 
-		if (!$s) {
-			$s = $this->select($v, 'nickname');
-			return ($s) ? $s->value : "";
-		} else {
-			return ($s) ? $s->value->givenName . " " . $s->value->familyName : "";
-		}
-	}
+        if (!$s) {
+            $s = $this->select($v, 'nickname');
+            return ($s) ? $s->value : "";
+        } else {
+            return ($s) ? $s->value->givenName . " " . $s->value->familyName : "";
+        }
+    }
 
-	/**
-	 * Parses nickname
-	 *
-	 * @param stdClass $v Object
-	 * @return string
-	 */
-	function selectNickame($v) {
-		$s = $this->select($v, 'nickname');
-		return ($s) ? $s : "";
-	}
+    /**
+     * Parses nickname
+     *
+     * @param stdClass $v Object
+     * @return string
+     */
+    public function selectNickame($v)
+    {
+        $s = $this->select($v, 'nickname');
+        return ($s) ? $s : "";
+    }
 
-	/**
-	 * Parses photo URL
-	 *
-	 * @param stdClass $v Object
-	 * @return string
-	 */
-	function selectPhoto($v) {
-		$s = $this->select($v, 'guid');
-		return ($s) ? (property_exists($s, 'image')) : "";
-	}
+    /**
+     * Parses photo URL
+     *
+     * @param stdClass $v Object
+     * @return string
+     */
+    public function selectPhoto($v)
+    {
+        $s = $this->select($v, 'guid');
+        return ($s) ? (property_exists($s, 'image')) : "";
+    }
 
-	/**
-	 * Parses email
-	 *
-	 * @param stdClass $v Object
-	 * @return string
-	 */
-	function selectEmail($v) {
-		$s = $this->select($v, 'email');
-		if (empty($s)) {
-			$s = $this->select($v, 'yahooid');
-			if (!empty($s) && isset($s->value) && strpos($s->value, "@") === false)
-				$s->value .= "@yahoo.com";
-		}
-		return ($s) ? $s->value : "";
-	}
+    /**
+     * Parses email
+     *
+     * @param stdClass $v Object
+     * @return string
+     */
+    public function selectEmail($v)
+    {
+        $s = $this->select($v, 'email');
+        if (empty($s)) {
+            $s = $this->select($v, 'yahooid');
+            if (!empty($s) && isset($s->value) && strpos($s->value, "@") === false) {
+                $s->value .= "@yahoo.com";
+            }
+        }
+        return ($s) ? $s->value : "";
+    }
 
-	/**
-	 * Returns current user id
-	 *
-	 * @return int
-	 * @throws Exception
-	 */
-	public function getCurrentUserId() {
-		$parameters = array();
-		$parameters['format'] = 'json';
+    /**
+     * Returns current user id
+     *
+     * @return int
+     * @throws Exception
+     */
+    public function getCurrentUserId()
+    {
+        $parameters = array();
+        $parameters['format'] = 'json';
 
-		$response = $this->api->get('me/guid', $parameters);
+        $response = $this->api->get('me/guid', $parameters);
 
-		if (!isset($response->guid->value)) {
-			throw new Exception("User id request failed! {$this->providerId} returned an invalid response: " . Hybrid_Logger::dumpData( $response ));
-		}
+        if (!isset($response->guid->value)) {
+            throw new Exception("User id request failed! {$this->providerId} returned an invalid response: " . Hybrid_Logger::dumpData($response));
+        }
 
-		return $response->guid->value;
-	}
-
+        return $response->guid->value;
+    }
 }

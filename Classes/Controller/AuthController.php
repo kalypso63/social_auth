@@ -29,50 +29,70 @@ namespace MV\SocialAuth\Controller;
 /**
  * AuthController
  */
-class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+{
+
+    protected $extConfig = array();
+
+    /**
+     * Initialize action
+     * @return void
+     */
+    public function initializeAction()
+    {
+        $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
+        if (!$this->extConfig['users.']['storagePid'] || !$this->extConfig['users.']['defaultGroup']) {
+            throw new \Exception('You must provide a pid for storage user and a default usergroup on Extension manager', 1473863197);
+        }
+    }
 
     /**
      * List action
      * @return void
      */
-    public function listAction(){
-        $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
+    public function listAction()
+    {
         $providers = array();
-        foreach($extConfig['providers.'] as $key => $parameters){
-            if($parameters['enabled'] == 1)
+        foreach ($this->extConfig['providers.'] as $key => $parameters) {
+            if ($parameters['enabled'] == 1) {
                 array_push($providers, rtrim($key, '.'));
+            }
         }
         $this->view->assign('providers', $providers);
     }
 
     /**
      * Connect action
-     * @return bool
+     * @return boolean
      * @throws \Exception
      */
-    public function connectAction(){
-        if(!$this->request->getArguments('provider'))
+    public function connectAction()
+    {
+        if (!$this->request->getArguments('provider')) {
             throw new \Exception('Provider is required', 1325691094);
+        }
         //redirect if login
-        if($GLOBALS['TSFE']->loginUser && is_array($GLOBALS['TSFE']->fe_user->user)){
+        if ($GLOBALS['TSFE']->loginUser && is_array($GLOBALS['TSFE']->fe_user->user)) {
             $redirectionUri = $this->request->getArgument('redirect');
             //sanitize url with logintype=logout
             $redirectionUri = preg_replace('/(&?logintype=logout)/i', '', $redirectionUri);
-            if(empty($redirectionUri)){
+            if (empty($redirectionUri)) {
                 $this->uriBuilder->setTargetPageUid((int) $GLOBALS['TSFE']->id);
                 $redirectionUri = $this->uriBuilder->build();
             }
             $this->redirectToUri($redirectionUri);
         }
-        return FALSE;
+        return false;
     }
 
     /**
      * Endpoint action
      * @return void
      */
-    public function endpointAction(){
-        if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done']))
+    public function endpointAction()
+    {
+        if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done'])) {
             \Hybrid_Endpoint::process();
+        }
     }
 }

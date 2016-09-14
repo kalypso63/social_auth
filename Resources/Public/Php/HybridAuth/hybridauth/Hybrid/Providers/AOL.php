@@ -11,8 +11,8 @@
  * 
  * http://hybridauth.sourceforge.net/userguide/IDProvider_info_AOL.html
  */
-class Hybrid_Providers_AOL extends Hybrid_Provider_Model_OpenID {
+class Hybrid_Providers_AOL extends Hybrid_Provider_Model_OpenID
+{
 
-	var $openidIdentifier = "http://openid.aol.com/";
-
+    public $openidIdentifier = "http://openid.aol.com/";
 }

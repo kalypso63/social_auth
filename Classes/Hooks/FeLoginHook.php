@@ -1,5 +1,6 @@
 <?php
 namespace MV\SocialAuth\Hooks;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -27,28 +28,31 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class FeLoginHook {
+class FeLoginHook
+{
 
     /**
      * @param array $params
      * @param $pObj
      */
-    public function postProcContent($params, $pObj) {
+    public function postProcContent($params, $pObj)
+    {
         $markerArray['###SOCIAL_AUTH###'] = '';
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
         $providers = array();
-        foreach($extConfig['providers.'] as $key => $parameters){
-            if($parameters['enabled'] == 1)
+        foreach ($extConfig['providers.'] as $key => $parameters) {
+            if ($parameters['enabled'] == 1) {
                 array_push($providers, rtrim($key, '.'));
+            }
         }
-        if(is_array($providers) && count($providers) > 0){
+        if (is_array($providers) && count($providers) > 0) {
             rsort($providers);
-            foreach($providers as $provider){
+            foreach ($providers as $provider) {
                 $providerConf = $pObj->conf['socialauth_provider.'][$provider.'.'];
                 $customTypolink = array(
                     'parameter' => $GLOBALS['TSFE']->id,
                     'additionalParams' => '&type=1316773681&tx_socialauth_pi1[provider]='.$provider.'&tx_socialauth_pi1[redirect]='.\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
-                    'useCashHash' => FALSE
+                    'useCashHash' => false
                 );
                 $providerConf['typolink.'] = ($providerConf['typolink.']) ? array_merge($providerConf['typolink.'], $customTypolink) : $customTypolink;
                 $markerArray['###SOCIAL_AUTH###'] = $pObj->cObj->stdWrap($markerArray['###SOCIAL_AUTH###'], $providerConf);
