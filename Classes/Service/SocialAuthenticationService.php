@@ -167,7 +167,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     'lastlogin' => time(),
                     'crdate' => time(),
                     'tstamp' => time(),
-                    'usergroup' => (int) $this->extConfig['users.']['defaultGroup'],
                     'name' => $this->cleanData($hybridUser->displayName),
                     'first_name' => $this->cleanData($hybridUser->firstName),
                     'last_name' => $this->cleanData($hybridUser->lastName),
@@ -201,6 +200,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid='.$exist[0]['uid'], $fields);
                     $userUid = $exist[0]['uid'];
                 } else {
+                    //get default user group
+                    $fields['usergroup'] = (int) $this->extConfig['users.']['defaultGroup'];
                     $new = true;
                     $GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_users', $fields);
                     $userUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
