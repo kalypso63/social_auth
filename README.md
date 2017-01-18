@@ -99,3 +99,7 @@ class UserAuthentificationSlot {
     }
 }
 ```
+
+## Troubles after upgrade with 1.1.0 version
+
+If we have an error like "Could not scan for classes", just uninstall extension and clear cache before upgrade it.
