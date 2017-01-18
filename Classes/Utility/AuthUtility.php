@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  */
 class AuthUtility
 {
-
     /**
      * @var array
      */
@@ -45,7 +44,17 @@ class AuthUtility
     /**
      * @var array
      */
-    protected $extConfig;
+    protected $extConfig = array();
+
+    /**
+     * \Hybrid_Auth $hybridAuth
+     */
+    protected $hybridAuth;
+
+    /**
+     * $logger
+     */
+    protected $logger;
 
     /**
      * initializeObject
@@ -91,6 +100,11 @@ class AuthUtility
             'debug_mode' => false,
             'debug_file' => '',
         );
+
+        /* @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+        $logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+        $this->logger = $logManager->getLogger(__CLASS__);
+        $this->hybridAuth = new \Hybrid_Auth($this->config);
     }
 
     /**
@@ -101,9 +115,9 @@ class AuthUtility
      */
     public function authenticate($provider)
     {
+        $socialUser = null;
         try {
-            $hybridauth = new \Hybrid_Auth($this->config);
-            $service = $hybridauth->authenticate($provider);
+            $service = $this->hybridAuth->authenticate($provider);
             $socialUser = $service->getUserProfile();
         } catch (\Exception $exception) {
             switch ($exception->getCode()) {
@@ -131,10 +145,16 @@ class AuthUtility
                 case 7:
                     $error = 'User not connected to the provider.';
                     break;
+                default:
+                    $error = 'Unknown error';
             }
+            $this->logger->log(
+                \TYPO3\CMS\Core\Log\LogLevel::ERROR,
+                $error
+            );
             HttpUtility::redirect(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . '?tx_socialauth_pi1[error]='.$exception->getCode());
         }
-        if ($socialUser) {
+        if (null !== $socialUser) {
             return $socialUser;
         } else {
             return false;
@@ -146,6 +166,6 @@ class AuthUtility
      */
     public function logout()
     {
-        (new \Hybrid_Auth($this->config))->logoutAllProviders();
+        $this->hybridAuth->logoutAllProviders();
     }
 }

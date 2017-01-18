@@ -31,7 +31,6 @@ namespace MV\SocialAuth\Controller;
  */
 class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
     protected $extConfig = array();
 
     /**
