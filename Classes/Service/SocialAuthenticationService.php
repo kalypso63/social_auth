@@ -117,6 +117,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $this->signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
         $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
+        $this->initTCA();
         $request = GeneralUtility::_GP('tx_socialauth_pi1');
         $this->provider = htmlspecialchars($request['provider']);
         return parent::init();
@@ -139,6 +140,15 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         $this->authenticationInformation = $authenticationInformation;
         $this->parentObject = $parentObject;
         parent::initAuth($subType, $loginData, $authenticationInformation, $parentObject);
+    }
+
+    /**
+     * Initializes TCA configuration array
+     */
+    protected function initTCA() {
+        if (!is_array($GLOBALS['TCA']) || !isset($GLOBALS['TCA']['pages'])) {
+            \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+        }
     }
 
     /**
@@ -183,10 +193,11 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 );
                 //grab image
                 if (!empty($hybridUser->photoURL)) {
-                    $path = PATH_site . 'uploads/pics/';
-                    $uniqueName = strtolower($this->provider .'_' .$hybridUser->identifier) . '.jpg';
+                    $defaultFeUsersPathFolder = rtrim($GLOBALS['TCA']['fe_users']['columns']['image']['config']['uploadfolder'],'/').'/';
+                    $path = (!empty($defaultFeUsersPathFolder)) ? $defaultFeUsersPathFolder : 'uploads/pics/';
+                    $uniqueName = strtolower($this->provider .'_' . $hybridUser->identifier) . '.jpg';
                     $file = file_get_contents($hybridUser->photoURL);
-                    file_put_contents($path . $uniqueName, $file);
+                    file_put_contents(PATH_site . $path . $uniqueName, $file);
                     $fields['image'] = $uniqueName;
                 }
 
