@@ -1,60 +1,5 @@
 [
     {
-        "name": "hybridauth/hybridauth",
-        "version": "v2.8.2",
-        "version_normalized": "2.8.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/hybridauth/hybridauth.git",
-            "reference": "36d52f0f66d6f7584167a243a11b592b5a6bcead"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/36d52f0f66d6f7584167a243a11b592b5a6bcead",
-            "reference": "36d52f0f66d6f7584167a243a11b592b5a6bcead",
-            "shasum": ""
-        },
-        "require": {
-            "ext-curl": "*",
-            "facebook/graph-sdk": "^5.4",
-            "php": ">=5.2.0"
-        },
-        "time": "2016-12-09T16:04:35+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Hybrid": "hybridauth/"
-            },
-            "classmap": [
-                "hybridauth/Hybrid"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "(MIT or GPL-3.0+)"
-        ],
-        "authors": [
-            {
-                "name": "Miled",
-                "email": "hybridauth@gmail.com"
-            }
-        ],
-        "description": "Open source social sign on PHP library.",
-        "homepage": "http://hybridauth.sourceforge.net",
-        "keywords": [
-            "OpenId",
-            "facebook",
-            "google",
-            "hybridauth",
-            "login",
-            "oauth",
-            "social",
-            "twitter",
-            "yahoo"
-        ]
-    },
-    {
         "name": "facebook/graph-sdk",
         "version": "5.4.4",
         "version_normalized": "5.4.4.0",
@@ -112,6 +57,61 @@
         "keywords": [
             "facebook",
             "sdk"
+        ]
+    },
+    {
+        "name": "hybridauth/hybridauth",
+        "version": "v2.8.2",
+        "version_normalized": "2.8.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/hybridauth/hybridauth.git",
+            "reference": "36d52f0f66d6f7584167a243a11b592b5a6bcead"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/36d52f0f66d6f7584167a243a11b592b5a6bcead",
+            "reference": "36d52f0f66d6f7584167a243a11b592b5a6bcead",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "facebook/graph-sdk": "^5.4",
+            "php": ">=5.2.0"
+        },
+        "time": "2016-12-09T16:04:35+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Hybrid": "hybridauth/"
+            },
+            "classmap": [
+                "hybridauth/Hybrid"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "(MIT or GPL-3.0+)"
+        ],
+        "authors": [
+            {
+                "name": "Miled",
+                "email": "hybridauth@gmail.com"
+            }
+        ],
+        "description": "Open source social sign on PHP library.",
+        "homepage": "http://hybridauth.sourceforge.net",
+        "keywords": [
+            "OpenId",
+            "facebook",
+            "google",
+            "hybridauth",
+            "login",
+            "oauth",
+            "social",
+            "twitter",
+            "yahoo"
         ]
     }
 ]

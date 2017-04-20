@@ -49,3 +49,12 @@ users.storagePid =
 # cat=Storage users/1; type=string; label= Default user group (uid commal list)
 users.defaultGroup =
 
+# cat=Storage users/2; type=int; label= Only for TYPO3 version >= 8.3 !! Uid of File Storage (1 by default autocreated by TYPO3 = fileadmin storage)
+users.fileStoragePid = 1
+
+# cat=Storage users/3; type=string; label= Only for TYPO3 version >= 8.3 !! Image path to store avatar file. (user_upload by default)
+users.filePath = user_upload
+
+
+
+

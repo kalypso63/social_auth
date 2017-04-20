@@ -6,6 +6,7 @@ Social Auth service for TYPO3 with Hybrid Auth API (Facebook, Twitter, Google + 
 * Install the extension using the Extension Manager
 * Register new app on Facebook, Twitter, Google or Linkedin and follow the instructions. Some examples are detailed on Hybrid auth user guide [http://hybridauth.sourceforge.net/userguide.html]
 * Configure via Extension Manager and add key + appId for each social provider & set options for fe_users creation (users pid and default usergroup id are required !)
+* New for 8.7 instance, set file storage uid and path for fe_users.image (FAL is used now for image field)
 * Add the static TS (typoscript) to your typoscript template
 
 ## Frontend plugin integration

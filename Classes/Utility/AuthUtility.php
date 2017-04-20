@@ -39,12 +39,12 @@ class AuthUtility
     /**
      * @var array
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * @var array
      */
-    protected $extConfig = array();
+    protected $extConfig = [];
 
     /**
      * \Hybrid_Auth $hybridAuth

@@ -52,14 +52,19 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     protected $provider;
 
     /**
+     * request
+     */
+    protected $request;
+
+    /**
      * @var array
      */
-    protected $extConfig = array();
+    protected $extConfig = [];
 
     /**
      * Login data as passed to initAuth()
      */
-    protected $loginData = array();
+    protected $loginData = [];
 
     /**
      * A reference to the calling object
@@ -68,26 +73,26 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     protected $parentObject;
 
-    protected $arrayProvider = array(
+    protected $arrayProvider = [
         'facebook' => 1,
         'google' => 2,
         'twitter' => 3,
         'linkedin' => 4
-    );
+    ];
 
     /**
      * Object manager
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
-    public $objectManager;
+    protected $objectManager;
 
     /**
      * authUtility
      *
      * @var \MV\SocialAuth\Utility\AuthUtility
      */
-    public $authUtility;
+    protected $authUtility;
 
     /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
@@ -108,18 +113,19 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     const STATUS_AUTHENTICATION_FAILURE_BREAK = 0;
 
-
     /**
      * @return bool
      */
     public function init()
     {
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $this->signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\SignalSlot\Dispatcher');
+        $this->signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
         $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
+        $this->request = GeneralUtility::_GP('tx_socialauth_pi1');
+        $this->provider = htmlspecialchars($this->request['provider']);
+        $this->initTSFE();
         $this->initTCA();
-        $request = GeneralUtility::_GP('tx_socialauth_pi1');
-        $this->provider = htmlspecialchars($request['provider']);
+
         return parent::init();
     }
 
@@ -145,9 +151,20 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     /**
      * Initializes TCA configuration array
      */
-    protected function initTCA() {
+    protected function initTCA()
+    {
         if (!is_array($GLOBALS['TCA']) || !isset($GLOBALS['TCA']['pages'])) {
             \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+        }
+    }
+
+    /**
+     * Initializes TSFE
+     */
+    protected function initTSFE()
+    {
+        if (TYPO3_MODE === 'FE' && !is_object($GLOBALS['TSFE']->sys_page)) {
+            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
         }
     }
 
@@ -158,7 +175,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     public function getUser()
     {
-        $user = null;
+        $user = $fileObject = null;
         session_start();
         // then grab the user profile
         if ($this->provider && $this->isServiceAvailable()) {
@@ -172,7 +189,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 } else {
                     $password = md5(uniqid());
                 }
-                $fields = array(
+                $fields = [
                     'pid' => (int) $this->extConfig['users.']['storagePid'],
                     'lastlogin' => time(),
                     'crdate' => time(),
@@ -190,20 +207,35 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     'country' => $this->cleanData($hybridUser->country),
                     'tx_socialauth_identifier' => $this->cleanData($hybridUser->identifier),
                     'tx_socialauth_source' => $this->arrayProvider[$this->provider]
-                );
+                ];
                 //grab image
                 if (!empty($hybridUser->photoURL)) {
-                    $defaultFeUsersPathFolder = rtrim($GLOBALS['TCA']['fe_users']['columns']['image']['config']['uploadfolder'],'/').'/';
-                    $path = (!empty($defaultFeUsersPathFolder)) ? $defaultFeUsersPathFolder : 'uploads/pics/';
-                    $uniqueName = strtolower($this->provider .'_' . $hybridUser->identifier) . '.jpg';
-                    $file = file_get_contents($hybridUser->photoURL);
-                    file_put_contents(PATH_site . $path . $uniqueName, $file);
-                    $fields['image'] = $uniqueName;
+                    $uniqueName = strtolower($this->provider . '_' . $hybridUser->identifier) . '.jpg';
+                    $fileContent = GeneralUtility::getUrl($hybridUser->photoURL);
+                    if($fileContent){
+                        //change behavior with new fal records for fe_users.image since TYPO3 8.3
+                        if (version_compare(TYPO3_version, '8.3.0', '>=')) {
+                            $storagePid = $this->extConfig['users.']['fileStoragePid'] ? (int) $this->extConfig['users.']['fileStoragePid'] : 1; #this defaukt ID is the “fileadmin/“ storage, autocreated by default
+                            $storagePath = $this->extConfig['users.']['filePath'] ? $this->extConfig['users.']['filePath'] : 'user_upload';
+                            /* @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+                            $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
+                            $storage = $storageRepository->findByUid($storagePid);
+                            if($storage->hasFolder($storagePath)){
+                                /* @var $fileObject \TYPO3\CMS\Core\Resource\FileInterface */
+                                $fileObject = $storage->createFile($uniqueName, $storage->getFolder($storagePath));
+                                $storage->setFileContents($fileObject, $fileContent);
+                                $fields['image'] = $fileObject->getUid();
+                            }
+                        }else{
+                            $defaultFeUsersPathFolder = rtrim($GLOBALS['TCA']['fe_users']['columns']['image']['config']['uploadfolder'],'/').'/';
+                            $path = (!empty($defaultFeUsersPathFolder)) ? $defaultFeUsersPathFolder : 'uploads/pics/';
+                            file_put_contents(PATH_site . $path . $uniqueName, $fileContent);
+                            $fields['image'] = $uniqueName;
+                        }
+                    }
                 }
-
                 //signal slot to add other fields
-                $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCreateOrUpdateUser', array($hybridUser, &$fields, $this));
-
+                $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCreateOrUpdateUser', [$hybridUser, &$fields, $this]);
                 //if the user exists in the TYPO3 database
                 $exist = $this->userExist($hybridUser->identifier);
                 if ($exist) {
@@ -218,14 +250,19 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     $userUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
                 }
                 $user = $this->getUserInfos($userUid);
+                //create fileReference if needed
+                if(version_compare(TYPO3_version, '8.3.0', '>=') && (true == $new || (false === $new && $user['image'] == 0)) && null !== $fileObject){
+                    $this->createFileReferenceFromFalFileObject($fileObject, $userUid);
+                }
                 $user['new'] = $new;
                 $user['fromHybrid'] = true;
                 if (isset($user['username'])) {
                     $this->login['uname'] = $user['username'];
                 }
-                $this->signalSlotDispatcher->dispatch(__CLASS__, 'getUser', array($hybridUser, &$user, $this));
+                $this->signalSlotDispatcher->dispatch(__CLASS__, 'getUser', [$hybridUser, &$user, $this]);
             }
         }
+
         return $user;
     }
 
@@ -244,7 +281,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
             $result = self::STATUS_AUTHENTICATION_SUCCESS_BREAK;
         }
         //signal slot authUser
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'authUser', array($user, &$result, $this));
+        $this->signalSlotDispatcher->dispatch(__CLASS__, 'authUser', [$user, &$result, $this]);
+
         return $result;
     }
 
@@ -266,18 +304,42 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     protected function userExist($identifier)
     {
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'fe_users', '1=1 AND deleted=0 AND tx_socialauth_identifier LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($identifier, 'fe_users').'"', '', '', 1);
+        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'fe_users', '1=1 AND deleted=0 AND tx_socialauth_identifier LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($identifier, 'fe_users').'"', '', 'tstamp DESC', 1);
     }
 
     /**
-     * get user
+     * Get user infos
      * @param $uid integer
-     * @return user array
+     * @return array
      */
     protected function getUserInfos($uid)
     {
         $where = 'uid = '.intval($uid).' AND deleted=0';
+
         return $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'fe_users', $where);
+    }
+
+    /**
+     * Create file reference for fe_user
+     *
+     * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+     * @param int $userUid
+     * @return void
+     */
+    protected function createFileReferenceFromFalFileObject($file, $userUid)
+    {
+        $fields = [
+            'pid' => (int) $this->extConfig['users.']['storagePid'],
+            'crdate' => time(),
+            'tstamp' => time(),
+            'table_local' => 'sys_file',
+            'uid_local' => $file->getUid(),
+            'tablenames' => 'fe_users',
+            'uid_foreign' => $userUid,
+            'fieldname' => 'image',
+        ];
+
+        $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_file_reference', $fields);
     }
 
     /**
@@ -296,6 +358,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         if (false === mb_check_encoding($str, 'UTF-8')) {
             $str = utf8_encode($str);
         }
+
         return $str;
     }
 }
