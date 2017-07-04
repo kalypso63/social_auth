@@ -32,8 +32,6 @@ return array(
     'Hybrid_User_Contact' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/User_Contact.php',
     'Hybrid_User_Profile' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/User_Profile.php',
     'LightOpenID' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/thirdparty/OpenID/LightOpenID.php',
-    'LinkedIn' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/thirdparty/LinkedIn/LinkedIn.php',
-    'LinkedInException' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/thirdparty/LinkedIn/LinkedIn.php',
     'OAuth1Client' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/thirdparty/OAuth/OAuth1Client.php',
     'OAuth2Client' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/thirdparty/OAuth/OAuth2Client.php',
     'OAuthConsumer' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/thirdparty/OAuth/OAuth.php',

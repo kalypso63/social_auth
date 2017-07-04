@@ -1,17 +1,17 @@
 [
     {
         "name": "facebook/graph-sdk",
-        "version": "5.4.4",
-        "version_normalized": "5.4.4.0",
+        "version": "5.5.0",
+        "version_normalized": "5.5.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/facebook/php-graph-sdk.git",
-            "reference": "5d0c4865e80e231d48a4571841bd018828fe58e1"
+            "reference": "93d7dc87e55a541d2e27d38f3aed40abbffdf6e1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/5d0c4865e80e231d48a4571841bd018828fe58e1",
-            "reference": "5d0c4865e80e231d48a4571841bd018828fe58e1",
+            "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/93d7dc87e55a541d2e27d38f3aed40abbffdf6e1",
+            "reference": "93d7dc87e55a541d2e27d38f3aed40abbffdf6e1",
             "shasum": ""
         },
         "require": {
@@ -26,7 +26,7 @@
             "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client",
             "paragonie/random_compat": "Provides a better CSPRNG option in PHP 5"
         },
-        "time": "2017-01-19T15:42:20+00:00",
+        "time": "2017-04-20T14:15:02+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -61,17 +61,17 @@
     },
     {
         "name": "hybridauth/hybridauth",
-        "version": "v2.8.2",
-        "version_normalized": "2.8.2.0",
+        "version": "v2.9.5",
+        "version_normalized": "2.9.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/hybridauth/hybridauth.git",
-            "reference": "36d52f0f66d6f7584167a243a11b592b5a6bcead"
+            "reference": "4e95e9c4a9e85a6ce4735dbb3924715a0493981a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/36d52f0f66d6f7584167a243a11b592b5a6bcead",
-            "reference": "36d52f0f66d6f7584167a243a11b592b5a6bcead",
+            "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/4e95e9c4a9e85a6ce4735dbb3924715a0493981a",
+            "reference": "4e95e9c4a9e85a6ce4735dbb3924715a0493981a",
             "shasum": ""
         },
         "require": {
@@ -79,7 +79,10 @@
             "facebook/graph-sdk": "^5.4",
             "php": ">=5.2.0"
         },
-        "time": "2016-12-09T16:04:35+00:00",
+        "require-dev": {
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2017-05-06T07:11:02+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
