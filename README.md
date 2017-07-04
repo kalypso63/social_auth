@@ -104,3 +104,7 @@ class UserAuthentificationSlot {
 ## Troubles after upgrade with 1.1.0 version
 
 If we have an error like "Could not scan for classes", just uninstall extension and clear cache before upgrade it.
+
+## Google + configuration
+
+Don't forget to activate Google+ API on [Google developer console] and fill the field Authorized redirect uri with http://yourdomain/?type=1316773682&hauth.done=Google
