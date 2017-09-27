@@ -1,17 +1,17 @@
 [
     {
         "name": "facebook/graph-sdk",
-        "version": "5.5.0",
-        "version_normalized": "5.5.0.0",
+        "version": "5.6.1",
+        "version_normalized": "5.6.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/facebook/php-graph-sdk.git",
-            "reference": "93d7dc87e55a541d2e27d38f3aed40abbffdf6e1"
+            "reference": "2f9639c15ae043911f40ffe44080b32bac2c5280"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/93d7dc87e55a541d2e27d38f3aed40abbffdf6e1",
-            "reference": "93d7dc87e55a541d2e27d38f3aed40abbffdf6e1",
+            "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/2f9639c15ae043911f40ffe44080b32bac2c5280",
+            "reference": "2f9639c15ae043911f40ffe44080b32bac2c5280",
             "shasum": ""
         },
         "require": {
@@ -26,7 +26,7 @@
             "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client",
             "paragonie/random_compat": "Provides a better CSPRNG option in PHP 5"
         },
-        "time": "2017-04-20T14:15:02+00:00",
+        "time": "2017-08-16T17:28:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -61,17 +61,17 @@
     },
     {
         "name": "hybridauth/hybridauth",
-        "version": "v2.9.5",
-        "version_normalized": "2.9.5.0",
+        "version": "v2.9.6",
+        "version_normalized": "2.9.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/hybridauth/hybridauth.git",
-            "reference": "4e95e9c4a9e85a6ce4735dbb3924715a0493981a"
+            "reference": "8e17bdb8d28efedb008504550db230c985723d8a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/4e95e9c4a9e85a6ce4735dbb3924715a0493981a",
-            "reference": "4e95e9c4a9e85a6ce4735dbb3924715a0493981a",
+            "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/8e17bdb8d28efedb008504550db230c985723d8a",
+            "reference": "8e17bdb8d28efedb008504550db230c985723d8a",
             "shasum": ""
         },
         "require": {
@@ -82,7 +82,7 @@
         "require-dev": {
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2017-05-06T07:11:02+00:00",
+        "time": "2017-07-09T07:14:21+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
