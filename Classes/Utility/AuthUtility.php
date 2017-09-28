@@ -92,7 +92,7 @@ class AuthUtility
                 'LinkedIn' => array(
                     'enabled' =>  $this->extConfig['providers.']['linkedin.']['enabled'],
                     'keys'    => array(
-                        'key' => $this->extConfig['providers.']['linkedin.']['keys.']['key'],
+                        'id' => $this->extConfig['providers.']['linkedin.']['keys.']['key'],
                         'secret' => $this->extConfig['providers.']['linkedin.']['keys.']['secret']
                     )
                 )
