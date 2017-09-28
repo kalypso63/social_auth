@@ -47,12 +47,15 @@ class FeLoginHook
         }
         if (is_array($providers) && count($providers) > 0) {
             rsort($providers);
+            //get redirect url if needed
+            $pattern = '/<input(?:.*?)name=\"redirect_url\"(?:.*)value=\"([^"]+).*>/i';
+            preg_match($pattern, $params['content'], $matches);
+            $redirectUrl = $matches[1] ? $matches[1] : GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
             foreach ($providers as $provider) {
                 $providerConf = $pObj->conf['socialauth_provider.'][$provider.'.'];
                 $customTypolink = array(
                     'parameter' => $GLOBALS['TSFE']->id,
-                    'additionalParams' => '&type=1316773681&tx_socialauth_pi1[provider]='.$provider.'&tx_socialauth_pi1[redirect]='.\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
-                    'useCashHash' => false
+                    'additionalParams' => '&type=1316773681&tx_socialauth_pi1[provider]='.$provider.'&tx_socialauth_pi1[redirect]='.$redirectUrl
                 );
                 $providerConf['typolink.'] = ($providerConf['typolink.']) ? array_merge($providerConf['typolink.'], $customTypolink) : $customTypolink;
                 $markerArray['###SOCIAL_AUTH###'] = $pObj->cObj->stdWrap($markerArray['###SOCIAL_AUTH###'], $providerConf);

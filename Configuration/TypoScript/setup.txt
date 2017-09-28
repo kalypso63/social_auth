@@ -65,7 +65,7 @@ plugin.tx_felogin_pi1{
         facebook{
             typolink{
                 #Custom class like bootstrap social or title
-                ATagParams = class="btn btn-block btn-social btn-facebook"
+                ATagParams = class="btn btn-block btn-social btn-facebook" rel="nofollow"
             }
             #wrap provider
             wrap = |
@@ -73,12 +73,12 @@ plugin.tx_felogin_pi1{
         }
         twitter < .facebook
         twitter{
-            typolink.ATagParams = class="btn btn-block btn-social btn-twitter"
+            typolink.ATagParams = class="btn btn-block btn-social btn-twitter" rel="nofollow"
             stdWrap.dataWrap = <span class="fa fa-twitter"></span>{LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:twitter.label}
         }
         google < .facebook
         google{
-            typolink.ATagParams = class="btn btn-block btn-social btn-google"
+            typolink.ATagParams = class="btn btn-block btn-social btn-google" rel="nofollow"
             stdWrap.dataWrap = <span class="fa fa-google"></span>{LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:google.label}
         }
     }

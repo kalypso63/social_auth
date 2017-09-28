@@ -118,8 +118,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     public function init()
     {
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $this->signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+        $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->signalSlotDispatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
         $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
         $this->request = GeneralUtility::_GP('tx_socialauth_pi1');
         $this->provider = htmlspecialchars($this->request['provider']);
@@ -140,7 +140,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     public function initAuth($subType, $loginData, $authenticationInformation, $parentObject)
     {
-        $this->authUtility = $this->objectManager->get('MV\\SocialAuth\\Utility\\AuthUtility');
+        $this->authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
         // Store login and authetication data
         $this->loginData = $loginData;
         $this->authenticationInformation = $authenticationInformation;
@@ -164,7 +164,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     protected function initTSFE()
     {
         if (TYPO3_MODE === 'FE' && !is_object($GLOBALS['TSFE']->sys_page)) {
-            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
         }
     }
 
@@ -221,7 +221,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                             $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
                             $storage = $storageRepository->findByUid($storagePid);
                             if($storage->hasFolder($storagePath)){
-                                /* @var $fileObject \TYPO3\CMS\Core\Resource\FileInterface */
+                                /* @var $fileObject \TYPO3\CMS\Core\Resource\AbstractFile */
                                 $fileObject = $storage->createFile($uniqueName, $storage->getFolder($storagePath));
                                 $storage->setFileContents($fileObject, $fileContent);
                                 $fields['image'] = $fileObject->getUid();

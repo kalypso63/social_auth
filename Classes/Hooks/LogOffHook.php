@@ -42,9 +42,9 @@ class LogOffHook
      */
     public function postProcessing($params, $pObj)
     {
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \MV\SocialAuth\Utility\AuthUtility $authUtility */
-        $authUtility = $this->objectManager->get('MV\\SocialAuth\\Utility\\AuthUtility');
+        $authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
         $authUtility->logout();
         session_start();
         session_destroy();
