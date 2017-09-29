@@ -297,6 +297,15 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         return (boolean) $this->extConfig['providers.'][strtolower($this->provider) . '.']['enabled'];
     }
 
+    /**
+     * Returns current provider
+     *
+     * @return string
+     */
+    public function getCurrentProvider()
+    {
+        return $this->provider;
+    }
 
     /**
      * @param $identifier
