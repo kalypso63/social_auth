@@ -109,7 +109,6 @@ class AuthUtility
 
     /**
      * @param string $provider
-     * @param string $returnTo
      *
      *  @return \Hybrid_User_Profile|FALSE
      */
@@ -162,7 +161,18 @@ class AuthUtility
     }
 
     /**
+     * @param string $provider
+     *
+     *  @return boolean
+     */
+    public function isConnectedWithProvider($provider)
+    {
+        return $this->hybridAuth->isConnectedWith($provider);
+    }
+
+    /**
      * logout from all providers when typo3 logout takes place
+     * return void
      */
     public function logout()
     {

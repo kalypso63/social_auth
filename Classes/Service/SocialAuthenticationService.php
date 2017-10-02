@@ -62,17 +62,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     protected $extConfig = [];
 
     /**
-     * Login data as passed to initAuth()
+     * @var array
      */
-    protected $loginData = [];
-
-    /**
-     * A reference to the calling object
-     *
-     * @var AbstractUserAuthentication
-     */
-    protected $parentObject;
-
     protected $arrayProvider = [
         'facebook' => 1,
         'google' => 2,
@@ -100,10 +91,13 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     protected $signalSlotDispatcher;
 
     /**
-     * 100 / 101 Authenticated / Not authenticated -> in each case go on with additonal auth
+     * true - this service was able to authenticate the user
      */
-    const STATUS_AUTHENTICATION_SUCCESS_CONTINUE = 100;
-    const STATUS_AUTHENTICATION_FAILURE_CONTINUE = 101;
+    const STATUS_AUTHENTICATION_SUCCESS_CONTINUE = true;
+    /**
+     * 100
+     */
+    const STATUS_AUTHENTICATION_FAILURE_CONTINUE = 100;
     /**
      * 200 - authenticated and no more checking needed - useful for IP checking without password
      */
@@ -111,7 +105,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     /**
      * FALSE - this service was the right one to authenticate the user but it failed
      */
-    const STATUS_AUTHENTICATION_FAILURE_BREAK = 0;
+    const STATUS_AUTHENTICATION_FAILURE_BREAK = false;
 
     /**
      * @return bool
@@ -141,10 +135,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     public function initAuth($subType, $loginData, $authenticationInformation, $parentObject)
     {
         $this->authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
-        // Store login and authetication data
-        $this->loginData = $loginData;
-        $this->authenticationInformation = $authenticationInformation;
-        $this->parentObject = $parentObject;
         parent::initAuth($subType, $loginData, $authenticationInformation, $parentObject);
     }
 
@@ -176,7 +166,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     public function getUser()
     {
         $user = $fileObject = null;
-        session_start();
         // then grab the user profile
         if ($this->provider && $this->isServiceAvailable()) {
             //get user
@@ -197,7 +186,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     'name' => $this->cleanData($hybridUser->displayName),
                     'first_name' => $this->cleanData($hybridUser->firstName),
                     'last_name' => $this->cleanData($hybridUser->lastName),
-                    'username' => $this->cleanData($hybridUser->displayName),
                     'password' => $password,
                     'email' => $this->cleanData($hybridUser->email),
                     'telephone' => $this->cleanData($hybridUser->phone),
@@ -208,6 +196,12 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     'tx_socialauth_identifier' => $this->cleanData($hybridUser->identifier),
                     'tx_socialauth_source' => $this->arrayProvider[$this->provider]
                 ];
+                //username
+                if (!empty($hybridUser->email)) {
+                    $fields['username'] = $hybridUser->email;
+                } else {
+                    $fields['username'] = $this->cleanData($hybridUser->displayName, true);
+                }
                 //grab image
                 if (!empty($hybridUser->photoURL)) {
                     $uniqueName = strtolower($this->provider . '_' . $hybridUser->identifier) . '.jpg';
@@ -277,7 +271,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
             return self::STATUS_AUTHENTICATION_FAILURE_CONTINUE;
         }
         $result = self::STATUS_AUTHENTICATION_FAILURE_CONTINUE;
-        if ($user) {
+        if ($user && $this->authUtility->isConnectedWithProvider($this->provider)) {
             $result = self::STATUS_AUTHENTICATION_SUCCESS_BREAK;
         }
         //signal slot authUser
@@ -285,7 +279,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
 
         return $result;
     }
-
 
     /**
      * Returns TRUE if single sign on for the given provider is enabled in ext_conf and is available
@@ -357,7 +350,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      * @param string $str
      * @return string
      */
-    protected function cleanData($str)
+    protected function cleanData($str, $forUsername = false)
     {
         $str = strip_tags($str);
         //Remove extra spaces
@@ -366,6 +359,11 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         $str = trim($str);
         if (false === mb_check_encoding($str, 'UTF-8')) {
             $str = utf8_encode($str);
+        }
+
+        if (true === $forUsername) {
+            $str = str_replace(' ', '', $str);
+            $str = mb_strtolower($str, 'utf-8');
         }
 
         return $str;
