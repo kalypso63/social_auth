@@ -165,7 +165,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     public function getUser()
     {
-        $user = $fileObject = null;
+        $user = false;
+        $fileObject = null;
         // then grab the user profile
         if ($this->provider && $this->isServiceAvailable()) {
             //get user
@@ -253,6 +254,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 if (isset($user['username'])) {
                     $this->login['uname'] = $user['username'];
                 }
+                $this->login['status'] = 'login';
                 $this->signalSlotDispatcher->dispatch(__CLASS__, 'getUser', [$hybridUser, &$user, $this]);
             }
         }
