@@ -4,6 +4,7 @@ namespace MV\SocialAuth\Service;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Sv\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 
 /***************************************************************
  *
@@ -179,11 +180,15 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 } else {
                     $password = md5(uniqid());
                 }
+                //create username
+                $email = !empty($hybridUser->email) ? $hybridUser->email : $hybridUser->emailVerified;
+                $username = !empty($email) ? $email : $this->cleanData($hybridUser->displayName, true);
                 $fields = [
                     'pid' => (int) $this->extConfig['users.']['storagePid'],
                     'lastlogin' => time(),
                     'crdate' => time(),
                     'tstamp' => time(),
+                    'username' => $username,
                     'name' => $this->cleanData($hybridUser->displayName),
                     'first_name' => $this->cleanData($hybridUser->firstName),
                     'last_name' => $this->cleanData($hybridUser->lastName),
@@ -197,12 +202,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     'tx_socialauth_identifier' => $this->cleanData($hybridUser->identifier),
                     'tx_socialauth_source' => $this->arrayProvider[$this->provider]
                 ];
-                //username
-                if (!empty($hybridUser->email)) {
-                    $fields['username'] = $hybridUser->email;
-                } else {
-                    $fields['username'] = $this->cleanData($hybridUser->displayName, true);
-                }
                 //grab image
                 if (!empty($hybridUser->photoURL)) {
                     $uniqueName = strtolower($this->provider . '_' . $hybridUser->identifier) . '.jpg';
@@ -244,6 +243,10 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     $GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_users', $fields);
                     $userUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
                 }
+                $uniqueUsername = $this->getUnique($username, $userUid);
+                if ($uniqueUsername != $username) {
+                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . intval($userUid), ['username' => $uniqueUsername]);
+                }
                 $user = $this->getUserInfos($userUid);
                 //create fileReference if needed
                 if(version_compare(TYPO3_version, '8.3.0', '>=') && (true == $new || (false === $new && $user['image'] == 0)) && null !== $fileObject){
@@ -254,7 +257,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 if (isset($user['username'])) {
                     $this->login['uname'] = $user['username'];
                 }
-                $this->login['status'] = 'login';
                 $this->signalSlotDispatcher->dispatch(__CLASS__, 'getUser', [$hybridUser, &$user, $this]);
             }
         }
@@ -308,7 +310,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     protected function userExist($identifier)
     {
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'fe_users', '1=1 AND deleted=0 AND tx_socialauth_identifier LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($identifier, 'fe_users').'"', '', 'tstamp DESC', 1);
+        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'fe_users', '1=1 AND pid = '.$this->extConfig['users.']['storagePid'].' AND deleted=0 AND tx_socialauth_identifier LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($identifier, 'fe_users').'"', '', 'tstamp DESC', 1);
     }
 
     /**
@@ -318,7 +320,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     protected function getUserInfos($uid)
     {
-        $where = 'uid = '.intval($uid).' AND deleted=0';
+        $where = 'uid = '.intval($uid).' AND deleted=0 AND pid='.$this->extConfig['users.']['storagePid'];
 
         return $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'fe_users', $where);
     }
@@ -369,5 +371,14 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         }
 
         return $str;
+    }
+
+    protected function getUnique($username, $id)
+    {
+        /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $username = $dataHandler->getUnique('fe_users', 'username', $username, $id, $this->extConfig['users.']['storagePid']);
+
+        return $username;
     }
 }
