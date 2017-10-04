@@ -48,5 +48,8 @@ class LogOffHook
         /** @var \MV\SocialAuth\Utility\AuthUtility $authUtility */
         $authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
         $authUtility->logout();
+        //remove session user
+        $GLOBALS['TSFE']->fe_user->removeSessionData();
+        $pObj->removeCookie('PHPSESSID');
     }
 }

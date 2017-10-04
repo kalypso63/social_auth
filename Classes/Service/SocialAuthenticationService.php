@@ -269,7 +269,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      * @param $user array record
      * @return int One of these values: 100 = Pass, 0 = Failed, 200 = Success
      */
-    public function authUser(&$user)
+    public function authUser(array $user)
     {
         if (!$user['fromHybrid']) {
             return self::STATUS_AUTHENTICATION_FAILURE_CONTINUE;
