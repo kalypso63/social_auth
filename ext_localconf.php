@@ -49,6 +49,7 @@ $boot = function ($_EXTKEY) {
     #Exclude some params
     $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'tx_socialauth_pi1[provider]';
     $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'tx_socialauth_pi1[redirect]';
+    $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'tx_socialauth_pi1[error]';
 };
 
 $boot($_EXTKEY);

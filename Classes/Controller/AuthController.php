@@ -70,14 +70,14 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (!$this->request->getArgument('provider')) {
             throw new \Exception('Provider is required', 1325691094);
         }
-        $redirectionUri = '';
+        $redirectionUri = null;
         //redirect if login
         if ($GLOBALS['TSFE']->loginUser && is_array($GLOBALS['TSFE']->fe_user->user)) {
             $redirectionUri = $this->request->getArgument('redirect');
             //sanitize url with logintype=logout
             $redirectionUri = preg_replace('/(&?logintype=logout)/i', '', $redirectionUri);
         }
-        if (empty($redirectionUri)) {
+        if (null === $redirectionUri) {
             $this->uriBuilder->setTargetPageUid((int) $GLOBALS['TSFE']->id);
             $redirectionUri = $this->uriBuilder->build();
         }
@@ -90,6 +90,13 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function endpointAction()
     {
+        //catch error (user cancel, access denied...)
+        if (isset($_REQUEST['error']) && !empty($_REQUEST['error'])) {
+            $this->uriBuilder->setTargetPageUid((int) $GLOBALS['TSFE']->id);
+            $redirectionUri = $this->uriBuilder->build();
+            $this->redirectToUri($redirectionUri);
+        }
+
         if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done'])) {
             \Hybrid_Endpoint::process();
         }
