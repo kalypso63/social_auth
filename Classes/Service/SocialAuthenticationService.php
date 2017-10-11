@@ -234,8 +234,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 $exist = $this->userExist($hybridUser->identifier);
                 if ($exist) {
                     $new = false;
-                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid='.$exist[0]['uid'], $fields);
-                    $userUid = $exist[0]['uid'];
+                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid='.$exist['uid'], $fields);
+                    $userUid = $exist['uid'];
                 } else {
                     //get default user group
                     $fields['usergroup'] = (int) $this->extConfig['users.']['defaultGroup'];
@@ -310,7 +310,12 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     protected function userExist($identifier)
     {
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'fe_users', '1=1 AND pid = '.$this->extConfig['users.']['storagePid'].' AND deleted=0 AND tx_socialauth_identifier LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($identifier, 'fe_users').'"', '', 'tstamp DESC', 1);
+        $whereClause = [];
+        $whereClause[] = 'AND deleted=0';
+        $whereClause[] = 'AND pid = ' . (int) $this->extConfig['users.']['storagePid'];
+        $whereClause[] = 'AND tx_socialauth_source = ' . (int) $this->arrayProvider[$this->provider];
+        $whereClause[] = 'AND tx_socialauth_identifier LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($identifier, 'fe_users').'"';
+        return $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'fe_users', '1=1 ' . implode(' ', $whereClause), '', 'tstamp DESC');
     }
 
     /**
