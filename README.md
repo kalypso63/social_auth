@@ -109,3 +109,7 @@ If we have an error like "Could not scan for classes", just uninstall extension 
 ## Google + configuration
 
 Don't forget to activate Google+ API on [Google developer console] and fill the field Authorized redirect uri with http://yourdomain/?type=1316773682&hauth.done=Google
+
+## Facebook strict mode
+
+If you use Strict mode on your Facbook app, fill the field Valid Oauth redirect URIS with http://yourdomain/?type=1316773682&hauth_done=Facebook

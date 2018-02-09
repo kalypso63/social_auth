@@ -15,9 +15,9 @@
     ],
     "homepage": "http://typo3.org",
     "license": ["GPL-2.0+"],
-    "version": "1.2.1",
+    "version": "1.2.2",
     "require": {
-        "hybridauth/hybridauth": "~2.9.0"
+        "hybridauth/hybridauth": "~2.10.0"
     },
     "config": {
         "vendor-dir": "Resources/Private/Librairies"

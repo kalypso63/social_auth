@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname(dirname(dirname($vendorDir)));
 
 return array(
+    'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'MV\\SocialAuth\\' => array($baseDir . '/Classes'),
     'Facebook\\' => array($vendorDir . '/facebook/graph-sdk/src/Facebook'),
 );
