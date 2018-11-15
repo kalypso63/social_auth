@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 
 call_user_func(function () {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-        'MV.' . $_EXTKEY,
+        'MV.social_auth',
         'Pi1',
         'Social auth'
     );
