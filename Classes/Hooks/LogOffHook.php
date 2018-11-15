@@ -1,6 +1,7 @@
 <?php
 namespace MV\SocialAuth\Hooks;
 
+
 /***************************************************************
  *
  *  Copyright notice
@@ -49,7 +50,7 @@ class LogOffHook
         $authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
         $authUtility->logout();
         //remove session user
-        $GLOBALS['TSFE']->fe_user->removeSessionData();
+        $pObj->removeSessionData();
         $pObj->removeCookie('PHPSESSID');
     }
 }

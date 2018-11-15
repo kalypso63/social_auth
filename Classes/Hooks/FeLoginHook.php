@@ -1,6 +1,7 @@
 <?php
 namespace MV\SocialAuth\Hooks;
 
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -63,6 +64,7 @@ class FeLoginHook
             //wrap all
             $markerArray['###SOCIAL_AUTH###'] = $pObj->cObj->stdWrap($markerArray['###SOCIAL_AUTH###'], $pObj->conf['socialauth.']);
         }
-        return $pObj->cObj->substituteMarkerArrayCached($params['content'], $markerArray);
+        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+        return $templateService->substituteMarkerArrayCached($params['content'], $markerArray);
     }
 }
