@@ -2,6 +2,10 @@
 namespace MV\SocialAuth\Service;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Sv\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -232,20 +236,22 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCreateOrUpdateUser', [$hybridUser, &$fields, $this]);
                 //if the user exists in the TYPO3 database
                 $exist = $this->userExist($hybridUser->identifier);
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable('fe_users');
                 if ($exist) {
                     $new = false;
-                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid='.$exist['uid'], $fields);
+                    $connection->update('fe_users', $fields, ['uid' => (int)$exist['uid']]);
                     $userUid = $exist['uid'];
                 } else {
                     //get default user group
                     $fields['usergroup'] = (int) $this->extConfig['users.']['defaultGroup'];
                     $new = true;
-                    $GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_users', $fields);
-                    $userUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
+                    $connection->insert('fe_users', $fields);
+                    $userUid = $connection->lastInsertId('fe_users');
                 }
                 $uniqueUsername = $this->getUnique($username, $userUid);
                 if ($uniqueUsername != $username) {
-                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . intval($userUid), ['username' => $uniqueUsername]);
+                    $connection->update('fe_users', ['username' => $uniqueUsername], ['uid' => (int)$userUid]);
                 }
                 $user = $this->getUserInfos($userUid);
                 //create fileReference if needed
@@ -310,12 +316,35 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     protected function userExist($identifier)
     {
-        $whereClause = [];
-        $whereClause[] = 'AND deleted=0';
-        $whereClause[] = 'AND pid = ' . (int) $this->extConfig['users.']['storagePid'];
-        $whereClause[] = 'AND tx_socialauth_source = ' . (int) $this->arrayProvider[$this->provider];
-        $whereClause[] = 'AND tx_socialauth_identifier LIKE "'.$GLOBALS['TYPO3_DB']->quoteStr($identifier, 'fe_users').'"';
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'fe_users', '1=1 ' . implode(' ', $whereClause), '', 'tstamp DESC');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('fe_users');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $res = $queryBuilder->select('uid')
+            ->from('fe_users')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(
+                        (int)$this->extConfig['users.']['storagePid'],
+                        Connection::PARAM_INT
+                    )
+                ),
+                $queryBuilder->expr()->eq(
+                    'tx_socialauth_source',
+                    $queryBuilder->createNamedParameter(
+                        (int)$this->arrayProvider[$this->provider],
+                        Connection::PARAM_INT
+                    )
+                ),
+                $queryBuilder->expr()->like(
+                    'tx_socialauth_identifier',
+                    $queryBuilder->createNamedParameter($identifier, Connection::PARAM_STR)
+                )
+            )
+            ->orderBy('tstamp', 'DESC')
+            ->execute()
+            ->fetch();
+        return $res;
     }
 
     /**
@@ -325,9 +354,27 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     protected function getUserInfos($uid)
     {
-        $where = 'uid = '.intval($uid).' AND deleted=0 AND pid='.$this->extConfig['users.']['storagePid'];
-
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'fe_users', $where);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('fe_users');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $res = $queryBuilder->select('*')
+            ->from('fe_users')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter((int)$uid, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter(
+                        (int)$this->extConfig['users.']['storagePid'],
+                        Connection::PARAM_INT
+                    )
+                )
+            )
+            ->execute()
+            ->fetch();
+        return $res;
     }
 
     /**
@@ -350,7 +397,22 @@ class SocialAuthenticationService extends AbstractAuthenticationService
             'fieldname' => 'image',
         ];
 
-        $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_file_reference', $fields);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_file_reference');
+        $connection->insert(
+            'sys_file_reference',
+            $fields,
+            [
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+                Connection::PARAM_INT,
+                Connection::PARAM_STR,
+            ]
+        );
     }
 
     /**
