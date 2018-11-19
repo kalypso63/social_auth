@@ -123,7 +123,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         $this->request = GeneralUtility::_GP('tx_socialauth_pi1');
         $this->provider = htmlspecialchars($this->request['provider']);
         $this->initTSFE();
-        $this->initTCA();
 
         return parent::init();
     }
@@ -141,16 +140,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     {
         $this->authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
         parent::initAuth($subType, $loginData, $authenticationInformation, $parentObject);
-    }
-
-    /**
-     * Initializes TCA configuration array
-     */
-    protected function initTCA()
-    {
-        if (!is_array($GLOBALS['TCA']) || !isset($GLOBALS['TCA']['pages'])) {
-            \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
-        }
     }
 
     /**
