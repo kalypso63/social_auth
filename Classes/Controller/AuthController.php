@@ -98,7 +98,11 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
         if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done'])) {
-            \Hybrid_Endpoint::process();
+            try {
+                \Hybrid_Endpoint::process();
+            } catch (\Hybrid_Exception $e) {
+                $this->throwStatus(403);
+            }
         }
     }
 }
