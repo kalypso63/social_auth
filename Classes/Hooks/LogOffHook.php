@@ -46,9 +46,13 @@ class LogOffHook
             return;
         }
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        /** @var \MV\SocialAuth\Utility\AuthUtility $authUtility */
-        $authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
-        $authUtility->logout();
+        try {
+            /** @var \MV\SocialAuth\Utility\AuthUtility $authUtility */
+            $authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
+            $authUtility->logout();
+        } catch (\Exception $e) {
+
+        }
         //remove session user
         $pObj->removeSessionData();
         $pObj->removeCookie('PHPSESSID');

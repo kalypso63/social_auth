@@ -88,7 +88,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      *
      * @var \MV\SocialAuth\Utility\AuthUtility
      */
-    protected $authUtility;
+    protected $authUtility = null;
 
     /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
@@ -138,7 +138,11 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     public function initAuth($subType, $loginData, $authenticationInformation, $parentObject)
     {
-        $this->authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
+        try {
+            $this->authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
+        } catch (\Exception $e) {
+
+        }
         parent::initAuth($subType, $loginData, $authenticationInformation, $parentObject);
     }
 
@@ -162,7 +166,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         $user = false;
         $fileObject = null;
         // then grab the user profile
-        if ($this->provider && $this->isServiceAvailable()) {
+        if ($this->provider && $this->isServiceAvailable() && this->$this->authUtility !== null) {
             //get user
             $hybridUser = $this->authUtility->authenticate($this->provider);
             if ($hybridUser) {
@@ -270,7 +274,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
             return self::STATUS_AUTHENTICATION_FAILURE_CONTINUE;
         }
         $result = self::STATUS_AUTHENTICATION_FAILURE_CONTINUE;
-        if ($user && $this->authUtility->isConnectedWithProvider($this->provider)) {
+        if ($user && $this->authUtility !== null && $this->authUtility->isConnectedWithProvider($this->provider)) {
             $result = self::STATUS_AUTHENTICATION_SUCCESS_BREAK;
         }
         //signal slot authUser
