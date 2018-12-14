@@ -1,6 +1,9 @@
 <?php
 namespace MV\SocialAuth\Controller;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -39,7 +42,7 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function initializeAction()
     {
-        $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
+        $this->extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('social_auth');
         if (!$this->extConfig['users.']['storagePid'] || !$this->extConfig['users.']['defaultGroup']) {
             throw new \Exception('You must provide a pid for storage user and a default usergroup on Extension manager', 1473863197);
         }
