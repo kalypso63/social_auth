@@ -1,6 +1,9 @@
 <?php
 namespace MV\SocialAuth\Controller;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -39,8 +42,8 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function initializeAction()
     {
-        $this->extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
-        if (!$this->extConfig['users.']['storagePid'] || !$this->extConfig['users.']['defaultGroup']) {
+        $this->extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('social_auth');
+        if (!$this->extConfig['users']['storagePid'] || !$this->extConfig['users']['defaultGroup']) {
             throw new \Exception('You must provide a pid for storage user and a default usergroup on Extension manager', 1473863197);
         }
     }
@@ -52,7 +55,7 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function listAction()
     {
         $providers = array();
-        foreach ($this->extConfig['providers.'] as $key => $parameters) {
+        foreach ($this->extConfig['providers'] as $key => $parameters) {
             if ($parameters['enabled'] == 1) {
                 array_push($providers, rtrim($key, '.'));
             }
@@ -98,7 +101,11 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
         if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done'])) {
-            \Hybrid_Endpoint::process();
+            try {
+                \Hybrid_Endpoint::process();
+            } catch (\Hybrid_Exception $e) {
+                $this->throwStatus(403);
+            }
         }
     }
 }

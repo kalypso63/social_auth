@@ -1,5 +1,5 @@
 {
-    "name": "kalypso63/social_auth",
+    "name": "kalypso63/social-auth",
     "type": "typo3-cms-extension",
     "description": "Authentification via social auth (Facebook, Twitter, Google + & LinkedIn)",
     "authors": [
