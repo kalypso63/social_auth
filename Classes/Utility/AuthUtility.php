@@ -1,9 +1,9 @@
 <?php
 namespace MV\SocialAuth\Utility;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /***************************************************************
  *
@@ -62,7 +62,7 @@ class AuthUtility
      */
     public function initializeObject()
     {
-        $this->extConfig = GeneralUtility::makeInstance(ExtensionService::class)->get('social_auth');
+        $this->extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('social_auth');
         $this->config = array(
             'base_url' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . '?type=1316773682',
             'providers' => array(

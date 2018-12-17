@@ -8,7 +8,7 @@ providers.facebook.keys.id =
 providers.facebook.keys.secret =
 
 # cat=FACEBOOK/3; type=string; label=Scope of get attributes
-providers.facebook.scope = email, user_birthday, user_hometown
+providers.facebook.scope = email
 
 # cat=FACEBOOK/4; type=string; label=Enable popin (value = popup,page)
 providers.facebook.display =

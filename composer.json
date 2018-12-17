@@ -1,5 +1,5 @@
 {
-    "name": "kalypso63/social-auth",
+    "name": "kalypso63/social_auth",
     "type": "typo3-cms-extension",
     "description": "Authentification via social auth (Facebook, Twitter, Google + & LinkedIn)",
     "authors": [
@@ -15,7 +15,7 @@
     ],
     "homepage": "http://typo3.org",
     "license": ["GPL-2.0+"],
-    "version": "1.2.2",
+    "version": "1.2.3",
     "require": {
         "hybridauth/hybridauth": "~2.10.0"
     },
