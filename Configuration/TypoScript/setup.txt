@@ -47,7 +47,7 @@ HybridEndPoint {
 }
 
 #bootstrap-social css with fontawesome
-[globalVar = LIT:1 = {$plugin.tx_socialauth.settings.includeBoostrapSocial}]
+["{$plugin.tx_socialauth.settings.includeBoostrapSocial}" == "1"]
     page.includeCSS{
         1448118394 = EXT:social_auth/Resources/Public/Css/bootstrap-social.min.css
         1448118395 = https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css

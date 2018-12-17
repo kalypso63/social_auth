@@ -1,6 +1,8 @@
 <?php
 namespace MV\SocialAuth\Hooks;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -38,7 +40,7 @@ class FeLoginHook
     public function postProcContent($params, $pObj)
     {
         $markerArray['###SOCIAL_AUTH###'] = '';
-        $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
+        $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('social_auth');
         $providers = array();
         foreach ($extConfig['providers.'] as $key => $parameters) {
             if ($parameters['enabled'] == 1) {
@@ -63,6 +65,7 @@ class FeLoginHook
             //wrap all
             $markerArray['###SOCIAL_AUTH###'] = $pObj->cObj->stdWrap($markerArray['###SOCIAL_AUTH###'], $pObj->conf['socialauth.']);
         }
-        return $pObj->cObj->substituteMarkerArrayCached($params['content'], $markerArray);
+        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+        return $templateService->substituteMarkerArrayCached($params['content'], $markerArray);
     }
 }

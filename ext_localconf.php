@@ -19,7 +19,9 @@ $boot = function ($_EXTKEY) {
                 'Auth' => 'connect, endpoint'
             )
         );
-        $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['social_auth']);
+        $extConfig = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+        )->get('social_auth');
         if ($extConfig['providers.']['facebook.']['enabled'] || $extConfig['providers.']['google.']['enabled'] || $extConfig['providers.']['twitter.']['enabled']) {
             $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'][$_EXTKEY] = 'MV\SocialAuth\Hooks\LogOffHook->postProcessing';
