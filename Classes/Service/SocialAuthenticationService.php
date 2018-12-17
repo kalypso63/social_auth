@@ -167,7 +167,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         $user = false;
         $fileObject = null;
         // then grab the user profile
-        if ($this->provider && $this->isServiceAvailable() && this->$this->authUtility !== null) {
+        if ($this->provider && $this->isServiceAvailable() && $this->authUtility !== null) {
             //get user
             $hybridUser = $this->authUtility->authenticate($this->provider);
             if ($hybridUser) {
