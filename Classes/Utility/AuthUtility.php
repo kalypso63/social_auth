@@ -67,34 +67,34 @@ class AuthUtility
             'base_url' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . '?type=1316773682',
             'providers' => array(
                 'Facebook' => array(
-                    'enabled' =>  $this->extConfig['providers.']['facebook.']['enabled'],
+                    'enabled' =>  $this->extConfig['providers']['facebook']['enabled'],
                     'keys'    => array(
-                        'id' => $this->extConfig['providers.']['facebook.']['keys.']['id'],
-                        'secret' => $this->extConfig['providers.']['facebook.']['keys.']['secret']
+                        'id' => $this->extConfig['providers']['facebook']['keys']['id'],
+                        'secret' => $this->extConfig['providers']['facebook']['keys']['secret']
                     ),
-                    'scope'   => $this->extConfig['providers.']['facebook.']['scope'],
-                    'display' => ($this->extConfig['providers.']['facebook.']['display']) ? $this->extConfig['provider.']['facebook.']['display'] : 'page'
+                    'scope'   => $this->extConfig['providers']['facebook']['scope'],
+                    'display' => ($this->extConfig['providers']['facebook']['display']) ? $this->extConfig['provider']['facebook']['display'] : 'page'
                 ),
                 'Google' => array(
-                    'enabled' =>  $this->extConfig['providers.']['google.']['enabled'],
+                    'enabled' =>  $this->extConfig['providers']['google']['enabled'],
                     'keys'    => array(
-                        'id' => $this->extConfig['providers.']['google.']['keys.']['id'],
-                        'secret' => $this->extConfig['providers.']['google.']['keys.']['secret']
+                        'id' => $this->extConfig['providers']['google']['keys']['id'],
+                        'secret' => $this->extConfig['providers']['google']['keys']['secret']
                     ),
-                    'scope'   => $this->extConfig['providers.']['google.']['scope']
+                    'scope'   => $this->extConfig['providers']['google']['scope']
                 ),
                 'Twitter' => array(
-                    'enabled' =>  $this->extConfig['providers.']['twitter.']['enabled'],
+                    'enabled' =>  $this->extConfig['providers']['twitter']['enabled'],
                     'keys'    => array(
-                        'key' => $this->extConfig['providers.']['twitter.']['keys.']['key'],
-                        'secret' => $this->extConfig['providers.']['twitter.']['keys.']['secret']
+                        'key' => $this->extConfig['providers']['twitter']['keys']['key'],
+                        'secret' => $this->extConfig['providers']['twitter']['keys']['secret']
                     )
                 ),
                 'LinkedIn' => array(
-                    'enabled' =>  $this->extConfig['providers.']['linkedin.']['enabled'],
+                    'enabled' =>  $this->extConfig['providers']['linkedin']['enabled'],
                     'keys'    => array(
-                        'id' => $this->extConfig['providers.']['linkedin.']['keys.']['key'],
-                        'secret' => $this->extConfig['providers.']['linkedin.']['keys.']['secret']
+                        'id' => $this->extConfig['providers']['linkedin']['keys']['key'],
+                        'secret' => $this->extConfig['providers']['linkedin']['keys']['secret']
                     )
                 )
             ),

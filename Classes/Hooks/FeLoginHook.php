@@ -42,7 +42,7 @@ class FeLoginHook
         $markerArray['###SOCIAL_AUTH###'] = '';
         $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('social_auth');
         $providers = array();
-        foreach ($extConfig['providers.'] as $key => $parameters) {
+        foreach ($extConfig['providers'] as $key => $parameters) {
             if ($parameters['enabled'] == 1) {
                 array_push($providers, rtrim($key, '.'));
             }

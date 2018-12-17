@@ -43,7 +43,7 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function initializeAction()
     {
         $this->extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('social_auth');
-        if (!$this->extConfig['users.']['storagePid'] || !$this->extConfig['users.']['defaultGroup']) {
+        if (!$this->extConfig['users']['storagePid'] || !$this->extConfig['users']['defaultGroup']) {
             throw new \Exception('You must provide a pid for storage user and a default usergroup on Extension manager', 1473863197);
         }
     }
@@ -55,7 +55,7 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function listAction()
     {
         $providers = array();
-        foreach ($this->extConfig['providers.'] as $key => $parameters) {
+        foreach ($this->extConfig['providers'] as $key => $parameters) {
             if ($parameters['enabled'] == 1) {
                 array_push($providers, rtrim($key, '.'));
             }

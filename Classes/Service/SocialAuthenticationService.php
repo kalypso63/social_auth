@@ -182,7 +182,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 $email = !empty($hybridUser->email) ? $hybridUser->email : $hybridUser->emailVerified;
                 $username = !empty($email) ? $email : $this->cleanData($hybridUser->displayName, true);
                 $fields = [
-                    'pid' => (int) $this->extConfig['users.']['storagePid'],
+                    'pid' => (int) $this->extConfig['users']['storagePid'],
                     'lastlogin' => time(),
                     'crdate' => time(),
                     'tstamp' => time(),
@@ -207,8 +207,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     if($fileContent){
                         //change behavior with new fal records for fe_users.image since TYPO3 8.3
                         if (version_compare(TYPO3_version, '8.3.0', '>=')) {
-                            $storagePid = $this->extConfig['users.']['fileStoragePid'] ? (int) $this->extConfig['users.']['fileStoragePid'] : 1; #this defaukt ID is the “fileadmin/“ storage, autocreated by default
-                            $storagePath = $this->extConfig['users.']['filePath'] ? $this->extConfig['users.']['filePath'] : 'user_upload';
+                            $storagePid = $this->extConfig['users']['fileStoragePid'] ? (int) $this->extConfig['users']['fileStoragePid'] : 1; #this defaukt ID is the “fileadmin/“ storage, autocreated by default
+                            $storagePath = $this->extConfig['users']['filePath'] ? $this->extConfig['users']['filePath'] : 'user_upload';
                             /* @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
                             $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
                             $storage = $storageRepository->findByUid($storagePid);
@@ -238,7 +238,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     $userUid = $exist['uid'];
                 } else {
                     //get default user group
-                    $fields['usergroup'] = (int) $this->extConfig['users.']['defaultGroup'];
+                    $fields['usergroup'] = (int) $this->extConfig['users']['defaultGroup'];
                     $new = true;
                     $connection->insert('fe_users', $fields);
                     $userUid = $connection->lastInsertId('fe_users');
@@ -291,7 +291,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      */
     protected function isServiceAvailable()
     {
-        return (boolean) $this->extConfig['providers.'][strtolower($this->provider) . '.']['enabled'];
+        return (boolean) $this->extConfig['providers'][strtolower($this->provider)]['enabled'];
     }
 
     /**
@@ -319,7 +319,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter(
-                        (int)$this->extConfig['users.']['storagePid'],
+                        (int)$this->extConfig['users']['storagePid'],
                         Connection::PARAM_INT
                     )
                 ),
@@ -361,7 +361,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter(
-                        (int)$this->extConfig['users.']['storagePid'],
+                        (int)$this->extConfig['users']['storagePid'],
                         Connection::PARAM_INT
                     )
                 )
@@ -381,7 +381,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     protected function createFileReferenceFromFalFileObject($file, $userUid)
     {
         $fields = [
-            'pid' => (int) $this->extConfig['users.']['storagePid'],
+            'pid' => (int) $this->extConfig['users']['storagePid'],
             'crdate' => time(),
             'tstamp' => time(),
             'table_local' => 'sys_file',
@@ -438,7 +438,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
     {
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $username = $dataHandler->getUnique('fe_users', 'username', $username, $id, $this->extConfig['users.']['storagePid']);
+        $username = $dataHandler->getUnique('fe_users', 'username', $username, $id, $this->extConfig['users']['storagePid']);
 
         return $username;
     }
