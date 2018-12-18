@@ -39,6 +39,7 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * Initialize action
      * @return void
+     * @throws \Exception
      */
     public function initializeAction()
     {
@@ -65,8 +66,10 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
     /**
      * Connect action
-     * @return boolean
-     * @throws \Exception
+     * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function connectAction()
     {
@@ -90,6 +93,8 @@ class AuthController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * Endpoint action
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function endpointAction()
     {

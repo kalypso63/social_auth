@@ -6,7 +6,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Sv\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -161,6 +160,13 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      * Find usergroup records
      *
      * @return array User informations
+     * @throws \TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException
+     * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException
+     * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException
+     * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException
+     * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function getUser()
     {
@@ -268,6 +274,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      * Authenticate user
      * @param $user array record
      * @return int One of these values: 100 = Pass, 0 = Failed, 200 = Success
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function authUser(array $user)
     {
@@ -413,6 +421,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
      * Clean Data
      *
      * @param string $str
+     * @param bool $forUsername
      * @return string
      */
     protected function cleanData($str, $forUsername = false)

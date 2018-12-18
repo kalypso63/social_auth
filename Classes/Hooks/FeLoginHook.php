@@ -36,6 +36,7 @@ class FeLoginHook
     /**
      * @param array $params
      * @param $pObj
+     * @return
      */
     public function postProcContent($params, $pObj)
     {
