@@ -1,17 +1,17 @@
 [
     {
         "name": "facebook/graph-sdk",
-        "version": "5.6.1",
-        "version_normalized": "5.6.1.0",
+        "version": "5.7.0",
+        "version_normalized": "5.7.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/facebook/php-graph-sdk.git",
-            "reference": "2f9639c15ae043911f40ffe44080b32bac2c5280"
+            "reference": "2d8250638b33d73e7a87add65f47fabf91f8ad9b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/2f9639c15ae043911f40ffe44080b32bac2c5280",
-            "reference": "2f9639c15ae043911f40ffe44080b32bac2c5280",
+            "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/2d8250638b33d73e7a87add65f47fabf91f8ad9b",
+            "reference": "2d8250638b33d73e7a87add65f47fabf91f8ad9b",
             "shasum": ""
         },
         "require": {
@@ -26,7 +26,7 @@
             "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client",
             "paragonie/random_compat": "Provides a better CSPRNG option in PHP 5"
         },
-        "time": "2017-08-16T17:28:07+00:00",
+        "time": "2018-12-11T22:56:31+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -61,17 +61,17 @@
     },
     {
         "name": "hybridauth/hybridauth",
-        "version": "v2.10.0",
-        "version_normalized": "2.10.0.0",
+        "version": "v2.12.0",
+        "version_normalized": "2.12.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/hybridauth/hybridauth.git",
-            "reference": "57f5a5bf677be6303cd23467e3d1d302f3f0777a"
+            "reference": "cfeee3fa948e2e17abc19a8d6e0ecbe637940c45"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/57f5a5bf677be6303cd23467e3d1d302f3f0777a",
-            "reference": "57f5a5bf677be6303cd23467e3d1d302f3f0777a",
+            "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/cfeee3fa948e2e17abc19a8d6e0ecbe637940c45",
+            "reference": "cfeee3fa948e2e17abc19a8d6e0ecbe637940c45",
             "shasum": ""
         },
         "require": {
@@ -83,7 +83,7 @@
         "require-dev": {
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2017-11-29T17:29:38+00:00",
+        "time": "2018-08-10T12:36:54+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -171,23 +171,23 @@
     },
     {
         "name": "psr/log",
-        "version": "1.0.2",
-        "version_normalized": "1.0.2.0",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/php-fig/log.git",
-            "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+            "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
-            "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+            "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+            "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-10T12:19:37+00:00",
+        "time": "2018-11-20T15:27:04+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

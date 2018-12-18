@@ -113,3 +113,7 @@ Don't forget to activate Google+ API on [Google developer console] and fill the 
 ## Facebook strict mode
 
 If you use Strict mode on your Facbook app, fill the field Valid Oauth redirect URIS with http://yourdomain/?type=1316773682&hauth_done=Facebook
+
+##Facebook scope
+
+By default social_auth use email scope but you can add more scopes detailled here : https://developers.facebook.com/docs/facebook-login/permissions/
