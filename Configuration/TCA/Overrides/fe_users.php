@@ -3,7 +3,6 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-
 /**
  * Add extra fields to the fe_users
  */
@@ -19,7 +18,8 @@ $tca = array(
                 array('Facebook', 1),
                 array('Google', 2),
                 array('Twitter', 3),
-                array('LinkedIn', 4)
+                array('LinkedIn', 4),
+                array('Instagram', 5),
             ),
             'size' => 1,
             'maxitems' => 1,

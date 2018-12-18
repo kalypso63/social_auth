@@ -4,6 +4,7 @@ namespace MV\SocialAuth\Utility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /***************************************************************
  *
@@ -95,6 +96,18 @@ class AuthUtility
                     'keys'    => array(
                         'id' => $this->extConfig['providers']['linkedin']['keys']['key'],
                         'secret' => $this->extConfig['providers']['linkedin']['keys']['secret']
+                    )
+                ),
+                'Instagram' => array(
+                    'enabled' =>  $this->extConfig['providers']['instagram']['enabled'],
+                    'keys'    => array(
+                        'id' => $this->extConfig['providers']['instagram']['keys']['id'],
+                        'secret' => $this->extConfig['providers']['instagram']['keys']['secret']
+                    ),
+                    'scope'   => $this->extConfig['providers']['instagram']['scope'],
+                    'wrapper' => array(
+                        'class' => 'Hybrid_Providers_Instagram',
+                        'path' => ExtensionManagementUtility::extPath('social_auth').'Resources/Private/Librairies/hybridauth/hybridauth/additional-providers/hybridauth-instagram/Providers/Instagram.php'
                     )
                 )
             ),

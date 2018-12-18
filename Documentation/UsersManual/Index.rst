@@ -12,7 +12,7 @@ Users manual
 ============
 
 - Install the extension using the Extension Manager
-- Register new app on Facebook, Twitter, Google or LinkedIn and follow the instructions. Some examples are detailed on Hybrid auth user guide [http://hybridauth.sourceforge.net/userguide.html]
+- Register new app on Facebook, Twitter, Google, LinkedIn or Instagram and follow the instructions. Some examples are detailed on Hybrid auth user guide [http://hybridauth.sourceforge.net/userguide.html]
 - Configure via Extension Manager and add key + appId for each social provider & set options for fe_users creation (users pid and default usergroup id are required !)
 - Storage User Pid should be different from classic fe_users PID to prevent unique username
 - Add the static TS (typoscript) to your typoscript template

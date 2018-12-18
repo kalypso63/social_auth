@@ -1,7 +1,7 @@
 {
     "name": "kalypso63/social_auth",
     "type": "typo3-cms-extension",
-    "description": "Authentification via social auth (Facebook, Twitter, Google + & LinkedIn)",
+    "description": "Authentication via social auth (Facebook, Twitter, Google +, LinkedIn & Instagram)",
     "authors": [
         {
             "name": "VANCLOOSTER Mickael",

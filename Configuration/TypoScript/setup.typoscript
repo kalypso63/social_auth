@@ -86,6 +86,11 @@ plugin.tx_felogin_pi1{
             typolink.ATagParams = class="btn btn-block btn-social btn-linkedin" rel="nofollow"
             stdWrap.dataWrap = <span class="fa fa-linkedin"></span>{LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:linkedin.label}
         }
+        instagram < .facebook
+        instagram{
+            typolink.ATagParams = class="btn btn-block btn-social btn-instagram" rel="nofollow"
+            stdWrap.dataWrap = <span class="fa fa-instagram"></span>{LLL:EXT:social_auth/Resources/Private/Language/locallang.xlf:instagram.label}
+        }
     }
 }
 

@@ -18,6 +18,9 @@
             <trans-unit id="linkedin.label">
                 <source>Sign in with LinkedIn</source>
             </trans-unit>
+            <trans-unit id="instagram.label">
+                <source>Sign in with Instagram</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

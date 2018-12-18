@@ -73,7 +73,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         'facebook' => 1,
         'google' => 2,
         'twitter' => 3,
-        'linkedin' => 4
+        'linkedin' => 4,
+        'instagram' => 5,
     ];
 
     /**

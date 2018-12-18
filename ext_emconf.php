@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
     'title' => 'Social auth',
-    'description' => 'Authentification via social auth (Facebook, Twitter, Google + & LinkedIn)',
+    'description' => 'Authentication via social auth (Facebook, Twitter, Google +, LinkedIn & Instagram)',
     'category' => 'plugin',
     'author' => 'VANCLOOSTER Mickael',
     'author_email' => 'vanclooster.mickael@gmail.com',

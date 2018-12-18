@@ -43,6 +43,18 @@ providers.linkedin.keys.key =
 # cat=LinkedIn/2; type=string; label=LinkedIn Secret
 providers.linkedin.keys.secret =
 
+# cat=Instagram/0; type=boolean; label=Instagram enable : Enable Single Sign On via Instagram for this System
+providers.instagram.enabled = 0
+
+# cat=Instagram/1; type=string; label=Instagram Client Id
+providers.instagram.keys.id =
+
+# cat=Instagram/2; type=string; label=Instagram Client Secret
+providers.instagram.keys.secret =
+
+# cat=Instagram/3; type=string; label=Scope of get attributes
+providers.instagram.scope = basic
+
 # cat=Storage users/O; type=int; label= Storage Pid : The Storage Pid of the Page, where the fe_users should be stored
 users.storagePid =
 
