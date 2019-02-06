@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Sv\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -142,7 +143,6 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         try {
             $this->authUtility = $this->objectManager->get(\MV\SocialAuth\Utility\AuthUtility::class);
         } catch (\Exception $e) {
-
         }
         parent::initAuth($subType, $loginData, $authenticationInformation, $parentObject);
     }
@@ -211,25 +211,17 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 if (!empty($hybridUser->photoURL)) {
                     $uniqueName = strtolower($this->provider . '_' . $hybridUser->identifier) . '.jpg';
                     $fileContent = GeneralUtility::getUrl($hybridUser->photoURL);
-                    if($fileContent){
-                        //change behavior with new fal records for fe_users.image since TYPO3 8.3
-                        if (version_compare(TYPO3_version, '8.3.0', '>=')) {
-                            $storagePid = $this->extConfig['users']['fileStoragePid'] ? (int) $this->extConfig['users']['fileStoragePid'] : 1; #this defaukt ID is the “fileadmin/“ storage, autocreated by default
-                            $storagePath = $this->extConfig['users']['filePath'] ? $this->extConfig['users']['filePath'] : 'user_upload';
-                            /* @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
-                            $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
-                            $storage = $storageRepository->findByUid($storagePid);
-                            if($storage->hasFolder($storagePath)){
-                                /* @var $fileObject \TYPO3\CMS\Core\Resource\AbstractFile */
-                                $fileObject = $storage->createFile($uniqueName, $storage->getFolder($storagePath));
-                                $storage->setFileContents($fileObject, $fileContent);
-                                $fields['image'] = $fileObject->getUid();
-                            }
-                        }else{
-                            $defaultFeUsersPathFolder = rtrim($GLOBALS['TCA']['fe_users']['columns']['image']['config']['uploadfolder'],'/').'/';
-                            $path = (!empty($defaultFeUsersPathFolder)) ? $defaultFeUsersPathFolder : 'uploads/pics/';
-                            file_put_contents(PATH_site . $path . $uniqueName, $fileContent);
-                            $fields['image'] = $uniqueName;
+                    if ($fileContent) {
+                        $storagePid = $this->extConfig['users']['fileStoragePid'] ? (int) $this->extConfig['users']['fileStoragePid'] : 1; #this default UID is the “fileadmin/“ storage, autocreated by default
+                        $storagePath = $this->extConfig['users']['filePath'] ? $this->extConfig['users']['filePath'] : 'user_upload';
+                        /* @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+                        $storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
+                        $storage = $storageRepository->findByUid($storagePid);
+                        if ($storage->hasFolder($storagePath)) {
+                            /* @var $fileObject \TYPO3\CMS\Core\Resource\AbstractFile */
+                            $fileObject = $storage->createFile($uniqueName, $storage->getFolder($storagePath));
+                            $storage->setFileContents($fileObject, $fileContent);
+                            $fields['image'] = $fileObject->getUid();
                         }
                     }
                 }
@@ -256,7 +248,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 }
                 $user = $this->getUserInfos($userUid);
                 //create fileReference if needed
-                if(version_compare(TYPO3_version, '8.3.0', '>=') && (true == $new || (false === $new && $user['image'] == 0)) && null !== $fileObject){
+                if (true === $new || (false === $new && $user['image'] == 0) && null !== $fileObject) {
                     $this->createFileReferenceFromFalFileObject($fileObject, $userUid);
                 }
                 $user['new'] = $new;
