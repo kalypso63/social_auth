@@ -6,7 +6,8 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Utility\DebugUtility;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Sv\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -178,13 +179,11 @@ class SocialAuthenticationService extends AbstractAuthenticationService
             //get user
             $hybridUser = $this->authUtility->authenticate($this->provider);
             if ($hybridUser) {
-                if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
-                    /** @var \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface $saltedpasswordsInstance */
-                    $saltedpasswordsInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
-                    $password = $saltedpasswordsInstance->getHashedPassword(uniqid());
-                } else {
-                    $password = md5(uniqid());
-                }
+                $hashedPassword = md5(uniqid());
+                try {
+                    $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
+                    $hashedPassword = $hashInstance->getHashedPassword(uniqid());
+                } catch(InvalidPasswordHashException $e) {}
                 //create username
                 $email = !empty($hybridUser->email) ? $hybridUser->email : $hybridUser->emailVerified;
                 $username = !empty($email) ? $email : $this->cleanData($hybridUser->displayName, true);
@@ -197,7 +196,7 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     'name' => $this->cleanData($hybridUser->displayName),
                     'first_name' => $this->cleanData($hybridUser->firstName),
                     'last_name' => $this->cleanData($hybridUser->lastName),
-                    'password' => $password,
+                    'password' => $hashedPassword,
                     'email' => $this->cleanData($hybridUser->email),
                     'telephone' => $this->cleanData($hybridUser->phone),
                     'address' => $this->cleanData($hybridUser->address),
@@ -436,6 +435,11 @@ class SocialAuthenticationService extends AbstractAuthenticationService
         return $str;
     }
 
+    /**
+     * @param $username
+     * @param $id
+     * @return string
+     */
     protected function getUnique($username, $id)
     {
         /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
