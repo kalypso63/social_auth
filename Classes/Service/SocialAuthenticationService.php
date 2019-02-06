@@ -8,6 +8,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Sv\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -206,6 +207,8 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                     'tx_socialauth_identifier' => $this->cleanData($hybridUser->identifier),
                     'tx_socialauth_source' => $this->arrayProvider[$this->provider]
                 ];
+                //remove null values but keep 0
+                $fields = array_filter($fields, 'strlen');
                 //grab image
                 if (!empty($hybridUser->photoURL)) {
                     $uniqueName = strtolower($this->provider . '_' . $hybridUser->identifier) . '.jpg';
@@ -231,6 +234,11 @@ class SocialAuthenticationService extends AbstractAuthenticationService
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable('fe_users');
                 if ($exist) {
+                    //Update only necessary fields
+                    if (isset($this->extConfig['users']['fieldsExcluded']) && !empty($this->extConfig['users']['fieldsExcluded'])) {
+                        $fieldsExcluded = GeneralUtility::trimExplode(',', $this->extConfig['users']['fieldsExcluded']);
+                        $fields = array_diff_key($fields, array_flip($fieldsExcluded));
+                    }
                     $new = false;
                     $connection->update('fe_users', $fields, ['uid' => (int)$exist['uid']]);
                     $userUid = $exist['uid'];

@@ -8,6 +8,7 @@ Social Auth service for TYPO3 with Hybrid Auth API (Facebook, Twitter, Google + 
 * Configure via Extension Manager and add key + appId for each social provider & set options for fe_users creation (users pid and default usergroup id are required !)
 * Storage User Pid should be different from classic fe_users PID to prevent unique username 
 * New for 8.7 instance, set file storage uid and path for fe_users.image (FAL is used now for image field)
+* Add excluded fields on update after each login. By default all fields (name,first_name,last_name,telephone,address,city,zip,country) are overwritten.
 * Add the static TS (typoscript) to your typoscript template
 
 ## Frontend plugin integration
