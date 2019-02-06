@@ -1,4 +1,6 @@
 # social_auth
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/vancloostermickael)
+
 Social Auth service for TYPO3 with Hybrid Auth API (Facebook, Twitter, Google + & LinkedIn)
 
 ## Installation instructions
